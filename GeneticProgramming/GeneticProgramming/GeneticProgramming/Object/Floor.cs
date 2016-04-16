@@ -11,16 +11,11 @@ namespace GeneticProgramming
     /// </summary>
     class Floor:BaseObject
     {
-        public Floor()
+        public Floor(Vector2 aPosition)
+            : base(aPosition)
         {
-            m_BaseOpacity = 1.00f;
-            m_Opacity = m_BaseOpacity;
-            m_Color = BasicFloor.FloorColor;
+            m_Color = Microsoft.Xna.Framework.Color.CornflowerBlue;
+            //m_Texture = Ressources.Gazon_Texture;
         }
-    }
-
-    public static class BasicFloor
-    {
-        public static Color FloorColor = Microsoft.Xna.Framework.Color.CornflowerBlue; 
     }
 }

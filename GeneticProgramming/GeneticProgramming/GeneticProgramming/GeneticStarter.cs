@@ -26,7 +26,6 @@ namespace GeneticProgramming
             m_Graphics.PreferredBackBufferWidth = 1000;
             m_Graphics.PreferredBackBufferHeight = 1000;
             Content.RootDirectory = "Content";
-            Run();
         }
 
         protected override void Initialize()
@@ -41,6 +40,11 @@ namespace GeneticProgramming
             m_Map = new Map("Map_1_Easy");
         }
 
+		protected override void UnloadContent()
+        {
+           
+        }
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
@@ -51,7 +55,7 @@ namespace GeneticProgramming
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(BasicFloor.FloorColor);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             m_SpriteBatch.Begin();
 
             m_Map.Draw(m_SpriteBatch);

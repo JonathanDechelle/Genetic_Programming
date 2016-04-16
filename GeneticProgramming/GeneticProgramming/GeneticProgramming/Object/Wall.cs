@@ -11,11 +11,12 @@ namespace GeneticProgramming
     /// </summary>
     class Wall:BaseObject
     {
-        public Wall()
+        public Wall(Vector2 aPosition)
+            : base(aPosition)
         {
-            m_BaseOpacity = 1.00f;
-            m_Opacity = m_BaseOpacity;
             m_Color = Microsoft.Xna.Framework.Color.Sienna;
+            m_Texture = Ressources.Rock_Texture;
+            m_OutLine = Ressources.Outline_Texture;
         }
     }
 }
