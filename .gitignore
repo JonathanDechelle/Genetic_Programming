@@ -1,0 +1,7 @@
+#ignore objects and archives, anywhere in the tree
+obj/
+bin/
+Properties/
+*.sdf
+*.suo
+*csproj
