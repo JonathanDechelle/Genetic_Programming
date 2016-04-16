@@ -29,6 +29,7 @@ namespace GeneticProgramming
             graphics.PreferredBackBufferWidth = 1000;
             graphics.PreferredBackBufferHeight = 1000;
             Content.RootDirectory = "Content";
+            Run();
         }
 
         /// <summary>
