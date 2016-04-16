@@ -52,21 +52,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Map_1_Expert.png">
-      <Name>Map_1_Expert</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Map_2_Easy.png">
-      <Name>Map_2_Easy</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Map_2_Expert.png">
-      <Name>Map_2_Expert</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="Map_Base.png">
       <Name>Map_Base</Name>
       <Importer>TextureImporter</Importer>

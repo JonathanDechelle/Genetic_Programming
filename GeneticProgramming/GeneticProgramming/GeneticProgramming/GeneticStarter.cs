@@ -16,14 +16,15 @@ namespace GeneticProgramming
     /// </summary>
     public class GeneticStarter : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        GraphicsDeviceManager m_Graphics;
+        SpriteBatch m_SpriteBatch;
+        Map m_Map;
 
         public GeneticStarter()
         {
-            graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1000;
-            graphics.PreferredBackBufferHeight = 1000;
+            m_Graphics = new GraphicsDeviceManager(this);
+            m_Graphics.PreferredBackBufferWidth = 1000;
+            m_Graphics.PreferredBackBufferHeight = 1000;
             Content.RootDirectory = "Content";
             Run();
         }
@@ -35,12 +36,9 @@ namespace GeneticProgramming
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-        }
-
-        protected override void UnloadContent()
-        {
-           
+            m_SpriteBatch = new SpriteBatch(GraphicsDevice);
+            Ressources.Load(Content);
+            m_Map = new Map("Map_1_Easy");
         }
 
         protected override void Update(GameTime gameTime)
@@ -54,6 +52,11 @@ namespace GeneticProgramming
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(BasicFloor.FloorColor);
+            m_SpriteBatch.Begin();
+
+            m_Map.Draw(m_SpriteBatch);
+
+            m_SpriteBatch.End();
             base.Draw(gameTime);
         }
     }
