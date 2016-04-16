@@ -18,10 +18,16 @@ namespace GeneticProgramming
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Map m_Map;
+        Enemy[,] m_Enemy_Position;
+        Player m_Player;
+        List<Light> ListLight; 
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1000;
+            graphics.PreferredBackBufferHeight = 1000;
             Content.RootDirectory = "Content";
         }
 
@@ -33,8 +39,6 @@ namespace GeneticProgramming
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -44,10 +48,12 @@ namespace GeneticProgramming
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            Ressources.Load(Content);
+            m_Map = new Map("Map_1_Easy");
+            m_Map.Generate_Enemy(ref m_Enemy_Position);
+            m_Map.Generate_Player(ref m_Player);
+            ListLight = new List<Light>();
         }
 
         /// <summary>
@@ -56,7 +62,7 @@ namespace GeneticProgramming
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+           
         }
 
         /// <summary>
@@ -66,11 +72,18 @@ namespace GeneticProgramming
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                m_Player.ExitGame)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            foreach (Enemy Enemy in m_Enemy_Position)
+                if (Enemy != null) Enemy.Update(m_Map.Grid);
+
+            KeyboardHelper.PlayerState = Keyboard.GetState();
+            m_Map.Update(m_Enemy_Position);
+            m_Player.Update(m_Map, m_Enemy_Position);
+            Light_Management.Update(m_Map, m_Enemy_Position);
+            KeyboardHelper.PlayerStateLast = Keyboard.GetState();
 
             base.Update(gameTime);
         }
@@ -81,10 +94,15 @@ namespace GeneticProgramming
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(BasicFloor.FloorColor);
+            spriteBatch.Begin();
+            m_Map.Draw(spriteBatch);
 
-            // TODO: Add your drawing code here
+            m_Player.Draw(spriteBatch);
+            foreach (Enemy Enemy in m_Enemy_Position)
+                if (Enemy != null) Enemy.Draw(spriteBatch);
 
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
