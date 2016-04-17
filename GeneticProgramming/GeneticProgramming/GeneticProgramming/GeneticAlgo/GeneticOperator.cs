@@ -93,7 +93,29 @@ namespace GeneticProgramming
 
         public static void ReproductionByTournamenent(Population aPopulation)
         {
-            
+            int randomStartIndex = Ressources.m_Random.Next(aPopulation.m_PopulationCount);
+            double chanceToBeSelected = 0.90;
+
+            List<Chromosome> chromosomesWinner = new List<Chromosome>();
+            for (int i = randomStartIndex; i < aPopulation.m_PopulationCount; i += 2)
+            {
+                Chromosome winner =
+                    aPopulation.m_Chromosomes[i].m_Adaptation > aPopulation.m_Chromosomes[i + 1].m_Adaptation ?
+ 
+                aPopulation.m_Chromosomes[i] :
+                aPopulation.m_Chromosomes[i + 1];
+
+                chromosomesWinner.Add(winner);
+            }
+
+            for (int i = 0; i < chromosomesWinner.Count; i++)
+            {
+                double randomSelection = Ressources.m_Random.NextDouble();
+                if (randomSelection < chanceToBeSelected)
+                {
+                    chromosomesWinner.RemoveAt(i);
+                }
+            }
         }
     }
 }
