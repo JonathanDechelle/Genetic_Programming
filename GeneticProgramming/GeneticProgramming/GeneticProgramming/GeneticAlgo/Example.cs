@@ -11,7 +11,10 @@ namespace GeneticProgramming
         {
             Population population = new Population();
             population.GeneratePopulation();
+            population.ComputeAdaptation();
 
+            population.ToString();
+            Chromosome bestByRoulette = GeneticOperator.ReproductionByRoulette(population);
         }
     }
 }

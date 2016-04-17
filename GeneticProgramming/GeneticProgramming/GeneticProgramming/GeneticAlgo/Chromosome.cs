@@ -11,12 +11,13 @@ namespace GeneticProgramming
         public double m_Adaptation;
         private byte[] m_ChromosomeBit;
 
+        #region DebugStuff
+        private string m_Bytes = "";
+        private const string CHROMOSOME_STRING_FORMAT = "Bytes = {0} Adaptation = {1}";
+        #endregion
+
         public Chromosome(int aBitCount)
         {
-            #region Debug Stuff
-            string outputDebug = "";
-            #endregion
-
             m_ChromosomeBit = new byte[aBitCount];
             byte randomByte;
             for (int i = 0; i < aBitCount; i++)
@@ -25,13 +26,14 @@ namespace GeneticProgramming
                 m_ChromosomeBit[i] = randomByte;
 
                 #region Debug Stuff
-                outputDebug += randomByte;
+                m_Bytes += randomByte;
                 #endregion
             }
+        }
 
-            #region Debug Stuff
-            Console.WriteLine(outputDebug);
-            #endregion
+        public override string ToString()
+        {
+            return string.Format(CHROMOSOME_STRING_FORMAT, m_Bytes, m_Adaptation);
         }
     }
 }
