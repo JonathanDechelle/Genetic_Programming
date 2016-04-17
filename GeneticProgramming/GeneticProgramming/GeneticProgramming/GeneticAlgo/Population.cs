@@ -38,33 +38,56 @@ namespace GeneticProgramming
 
         public double[] GetAdaptationOrderedByHighestPerformance()
         {
+            GetAdaptationOrderedByLowestPerformance();
             int count = m_PopulationCount;
             double[] adaptations = new double[count];
-            double[] tempAdaptations = new double[count];
+            int higherThan;
 
             for (int i = 0; i < count; i++)
             {
-                tempAdaptations[i] = m_Chromosomes[i].m_Adaptation;
-
-                if (i == 0)
+                higherThan = 0;
+                for (int j = 0; j < count; j++)
                 {
-                    adaptations[i] = tempAdaptations[i];
-                    continue;
-                }
-
-                for (int j = 0; j < i; j++)
-                {
-                    if (adaptations[j] >= tempAdaptations[i])
+                    if (i == j)
                     {
-                        double temp = adaptations[j];
-                        adaptations[j] = tempAdaptations[i];
-                        adaptations[i] = temp;
+                        continue; //excluded himself
                     }
-                    else
+
+                    if (m_Chromosomes[i].m_Adaptation > m_Chromosomes[j].m_Adaptation)
                     {
-                        adaptations[i] = tempAdaptations[i];
+                        higherThan++;
                     }
                 }
+
+                adaptations[higherThan] = m_Chromosomes[i].m_Adaptation;
+            }
+
+            return adaptations;
+        }
+
+        public double[] GetAdaptationOrderedByLowestPerformance()
+        {
+            int count = m_PopulationCount;
+            double[] adaptations = new double[count];
+            int lowerThan;
+
+            for (int i = 0; i < count; i++)
+            {
+                lowerThan = 0;
+                for (int j = 0; j < count; j++)
+                {
+                    if (i == j)
+                    {
+                        continue; //excluded himself
+                    }
+
+                    if (m_Chromosomes[i].m_Adaptation < m_Chromosomes[j].m_Adaptation)
+                    {
+                        lowerThan++;
+                    }
+                }
+
+                adaptations[lowerThan] = m_Chromosomes[i].m_Adaptation;
             }
 
             return adaptations;
