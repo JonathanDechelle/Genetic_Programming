@@ -92,14 +92,16 @@ namespace GeneticProgramming
             return currentChromosome;
         }
 
-        public static void ReproductionByTournamenent(Population aPopulation)
+        public static Chromosome[] ReproductionByTournamenent(Population aPopulation)
         {
             int populationCount = aPopulation.GetCount();
             int randomStartIndex = Ressources.m_Random.Next(populationCount);
             double chanceToBeSelected = 0.90;
 
             List<Chromosome> chromosomesWinner = new List<Chromosome>();
-            for (int i = randomStartIndex; i < populationCount; i += 2)
+            
+            const int pairGap = 2;
+            for (int i = randomStartIndex; i + pairGap < populationCount; i += pairGap)
             {
                 Chromosome currentChromosome = aPopulation.GetChromosomeAt(i);
                 Chromosome nextChromosome = aPopulation.GetChromosomeAt(i + 1);
@@ -116,11 +118,13 @@ namespace GeneticProgramming
             for (int i = 0; i < chromosomesWinner.Count; i++)
             {
                 double randomSelection = Ressources.m_Random.NextDouble();
-                if (randomSelection < chanceToBeSelected)
+                if (randomSelection > chanceToBeSelected)
                 {
                     chromosomesWinner.RemoveAt(i);
                 }
             }
+
+            return chromosomesWinner.ToArray();
         }
     }
 }

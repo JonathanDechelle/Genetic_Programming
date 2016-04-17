@@ -8,16 +8,13 @@ namespace GeneticProgramming
     public class Population
     {
         private double m_AdaptationSum;
-        private int m_PopulationCount = 10;
         private int m_ChromosomeBitCount = 4;
         private Chromosome[] m_Chromosomes;
         
-        public void GeneratePopulation()
+        public void GeneratePopulation(int aPopulationCount)
         {
-            Console.WriteLine("\r\nGeneratePopulation count = " + m_PopulationCount);
-
-            m_Chromosomes = new Chromosome[m_PopulationCount];
-            for (int i = 0; i < m_PopulationCount; i++)
+            m_Chromosomes = new Chromosome[aPopulationCount];
+            for (int i = 0; i < aPopulationCount; i++)
             {
                 m_Chromosomes[i] = new Chromosome(m_ChromosomeBitCount);
             }
@@ -33,9 +30,14 @@ namespace GeneticProgramming
             return m_Chromosomes;
         }
 
+        public void SetChromosomes(Chromosome[] aChromosomes)
+        {
+            m_Chromosomes = aChromosomes;
+        }
+
         public int GetCount()
         {
-            return m_PopulationCount;
+            return m_Chromosomes.Length;
         }
 
         public double GetAdaptationTotal()
@@ -46,7 +48,8 @@ namespace GeneticProgramming
         public void ComputeAdaptation()
         {
             m_AdaptationSum = 0;
-            for (int i = 0; i < m_PopulationCount; i++)
+            int populationCount = GetCount();
+            for (int i = 0; i < populationCount; i++)
             {
                 /* TO DO  CALCUL*/
                 //Fake calcul for now
@@ -58,8 +61,9 @@ namespace GeneticProgramming
 
         public double[] GetCurrentPopulationAdaptation()
         {
-            double[] adaptations = new double[m_PopulationCount];
-            for (int i = 0; i < m_PopulationCount; i++)
+            int populationCount = GetCount();
+            double[] adaptations = new double[populationCount];
+            for (int i = 0; i < populationCount; i++)
             {
                 adaptations[i] = m_Chromosomes[i].m_Adaptation;
             }
@@ -70,14 +74,14 @@ namespace GeneticProgramming
         public Chromosome[] GetChromosomesOrderedByHighestPerformance()
         {
             GetChromosomesOrderedByLowestPerformance();
-            int count = m_PopulationCount;
-            Chromosome[] chromosomes = new Chromosome[count];
+            int populationCount = GetCount();
+            Chromosome[] chromosomes = new Chromosome[populationCount];
             int higherThan;
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < populationCount; i++)
             {
                 higherThan = 0;
-                for (int j = 0; j < count; j++)
+                for (int j = 0; j < populationCount; j++)
                 {
                     if (i == j)
                     {
@@ -98,14 +102,14 @@ namespace GeneticProgramming
 
         public Chromosome[] GetChromosomesOrderedByLowestPerformance()
         {
-            int count = m_PopulationCount;
-            Chromosome[] chromosomes = new Chromosome[count];
+            int populationCount = GetCount();
+            Chromosome[] chromosomes = new Chromosome[populationCount];
             int lowerThan;
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < populationCount; i++)
             {
                 lowerThan = 0;
-                for (int j = 0; j < count; j++)
+                for (int j = 0; j < populationCount; j++)
                 {
                     if (i == j)
                     {
@@ -126,7 +130,9 @@ namespace GeneticProgramming
 
         public override string ToString()
         {
-            for (int i = 0; i < m_PopulationCount; i++)
+            int populationCount = GetCount();
+            Console.WriteLine("\r\nGeneratePopulation count = " + populationCount);
+            for (int i = 0; i < populationCount; i++)
             {
                 Console.WriteLine(m_Chromosomes[i].ToString());
             }

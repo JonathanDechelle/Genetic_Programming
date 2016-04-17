@@ -10,7 +10,7 @@ namespace GeneticProgramming
         public static void GenerateSimpleGPExample()
         {
             Population population = new Population();
-            population.GeneratePopulation();
+            population.GeneratePopulation(10);
             population.ComputeAdaptation();
 
             population.ToString();
@@ -20,6 +20,13 @@ namespace GeneticProgramming
                 population.GetAdaptationTotal());
 
             Chromosome bestByRank = GeneticOperator.ReproductionByRank(population);
+
+
+            Chromosome[] currentChromosomes = population.GetChromosomes();
+            currentChromosomes = GeneticOperator.ReproductionByTournamenent(population);
+            population.SetChromosomes(currentChromosomes);
+
+            population.ToString();
         }
     }
 }
