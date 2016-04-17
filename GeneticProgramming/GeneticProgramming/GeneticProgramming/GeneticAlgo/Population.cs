@@ -7,12 +7,11 @@ namespace GeneticProgramming
 {
     public class Population
     {
-        public double m_AdaptationSum;
-        public int m_PopulationCount = 10;
-        public Chromosome[] m_Chromosomes;
-
+        private double m_AdaptationSum;
+        private int m_PopulationCount = 10;
         private int m_ChromosomeBitCount = 4;
-
+        private Chromosome[] m_Chromosomes;
+        
         public void GeneratePopulation()
         {
             Console.WriteLine("\r\nGeneratePopulation count = " + m_PopulationCount);
@@ -22,6 +21,26 @@ namespace GeneticProgramming
             {
                 m_Chromosomes[i] = new Chromosome(m_ChromosomeBitCount);
             }
+        }
+
+        public Chromosome GetChromosomeAt(int aIndex)
+        {
+            return m_Chromosomes[aIndex];
+        }
+
+        public Chromosome[] GetChromosomes()
+        {
+            return m_Chromosomes;
+        }
+
+        public int GetCount()
+        {
+            return m_PopulationCount;
+        }
+
+        public double GetAdaptationTotal()
+        {
+            return m_AdaptationSum;
         }
 
         public void ComputeAdaptation()

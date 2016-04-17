@@ -40,10 +40,11 @@ namespace GeneticProgramming
 
         public static Chromosome ReproductionByRank(Population aPopulation)
         {
+            int populationCount = aPopulation.GetCount();
             Chromosome[] orderedChromosomeByRank = aPopulation.GetChromosomesOrderedByHighestPerformance();
-            double[] rankScores = new double[aPopulation.m_PopulationCount];
+            double[] rankScores = new double[populationCount];
             double sumRank = 0;
-            for (int i = 0; i < aPopulation.m_PopulationCount; i++)
+            for (int i = 0; i < populationCount; i++)
             {
                 rankScores[i] = i + 1;
                 sumRank += i;
@@ -93,17 +94,21 @@ namespace GeneticProgramming
 
         public static void ReproductionByTournamenent(Population aPopulation)
         {
-            int randomStartIndex = Ressources.m_Random.Next(aPopulation.m_PopulationCount);
+            int populationCount = aPopulation.GetCount();
+            int randomStartIndex = Ressources.m_Random.Next(populationCount);
             double chanceToBeSelected = 0.90;
 
             List<Chromosome> chromosomesWinner = new List<Chromosome>();
-            for (int i = randomStartIndex; i < aPopulation.m_PopulationCount; i += 2)
+            for (int i = randomStartIndex; i < populationCount; i += 2)
             {
+                Chromosome currentChromosome = aPopulation.GetChromosomeAt(i);
+                Chromosome nextChromosome = aPopulation.GetChromosomeAt(i + 1);
+
                 Chromosome winner =
-                    aPopulation.m_Chromosomes[i].m_Adaptation > aPopulation.m_Chromosomes[i + 1].m_Adaptation ?
+                    currentChromosome.m_Adaptation > nextChromosome.m_Adaptation ?
  
-                aPopulation.m_Chromosomes[i] :
-                aPopulation.m_Chromosomes[i + 1];
+                currentChromosome :
+                nextChromosome;
 
                 chromosomesWinner.Add(winner);
             }
