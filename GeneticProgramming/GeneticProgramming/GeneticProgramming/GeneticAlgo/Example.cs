@@ -7,8 +7,10 @@ namespace GeneticProgramming
 {
     public class Example
     {
-        public static void GenerateSimpleExample()
+        public static void GenerateSimpleGPExample()
         {
+            Population population = new Population();
+            population.GeneratePopulation();
 
         }
     }

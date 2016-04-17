@@ -38,6 +38,8 @@ namespace GeneticProgramming
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
             Ressources.Load(Content);
             m_Map = new Map("Map_1_Easy");
+
+            Example.GenerateSimpleGPExample();
         }
 
 		protected override void UnloadContent()
