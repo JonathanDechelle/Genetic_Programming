@@ -50,18 +50,16 @@ namespace GeneticProgramming
                 sumRank += i;
             }
 
-            Console.Write("\r\nReproductionByRank\r\n");
-            ReproductionByAdaptation(
+            Console.Write("\r\nBest Chromosome in Reproduction By Rank\r\n");
+            return ReproductionByAdaptation(
                 orderedChromosomeByRank,
                 rankScores, 
                 sumRank);
-
-            return null;
         }
 
         public static Chromosome ReproductionByRoulette(Chromosome[] aChromosomes, double[] aAdaptations, double aAdaptationSum)
         {
-            Console.Write("\r\nBest in ReproductionByRoulette\r\n");
+            Console.Write("\r\nBest Chromosome in Reproduction By Roulette\r\n");
             return ReproductionByAdaptation(aChromosomes, aAdaptations, aAdaptationSum);
         }
 
@@ -92,16 +90,21 @@ namespace GeneticProgramming
             return currentChromosome;
         }
 
-        public static Chromosome[] ReproductionByTournamenent(Population aPopulation)
+        public static Chromosome[] ReproductionByTournamenent(Population aPopulation, int aMinChromosomes)
         {
+            const int pairGap = 2;
+
             int populationCount = aPopulation.GetCount();
-            int randomStartIndex = Ressources.m_Random.Next(populationCount);
+            int randomStartIndex = Ressources.m_Random.Next(aMinChromosomes - pairGap);
+            if (randomStartIndex < aMinChromosomes)
+            {
+                randomStartIndex = aMinChromosomes;
+            }
+
             double chanceToBeSelected = 0.90;
 
             List<Chromosome> chromosomesWinner = new List<Chromosome>();
-            
-            const int pairGap = 2;
-            for (int i = randomStartIndex; i + pairGap < populationCount; i += pairGap)
+            for (int i = randomStartIndex; i > 0 + pairGap; i -= pairGap)
             {
                 Chromosome currentChromosome = aPopulation.GetChromosomeAt(i);
                 Chromosome nextChromosome = aPopulation.GetChromosomeAt(i + 1);
@@ -115,12 +118,17 @@ namespace GeneticProgramming
                 chromosomesWinner.Add(winner);
             }
 
+            Console.Write("\r\nBest Chromosomes in Reproduction By Tournament\r\n");
             for (int i = 0; i < chromosomesWinner.Count; i++)
             {
                 double randomSelection = Ressources.m_Random.NextDouble();
                 if (randomSelection > chanceToBeSelected)
                 {
                     chromosomesWinner.RemoveAt(i);
+                }
+                else
+                {
+                    Console.WriteLine(chromosomesWinner[i].ToString());
                 }
             }
 

@@ -23,7 +23,9 @@ namespace GeneticProgramming
 
 
             Chromosome[] currentChromosomes = population.GetChromosomes();
-            currentChromosomes = GeneticOperator.ReproductionByTournamenent(population);
+            int populationHalfCount = population.GetCount() / 2;
+
+            currentChromosomes = GeneticOperator.ReproductionByTournamenent(population, populationHalfCount);
             population.SetChromosomes(currentChromosomes);
 
             population.ToString();
