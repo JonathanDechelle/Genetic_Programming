@@ -38,5 +38,21 @@ namespace GeneticProgramming
                 return;
             }
         }
+
+        public static void ReproductionByRank(Population aPopulation)
+        {
+
+        }
+
+        public static void ReproductionByRoulette(Population aPopulation)
+        {
+          
+
+        }
+
+        public static void ReproductionByTournamenent(Population aPopulation)
+        {
+            
+        }
     }
 }
