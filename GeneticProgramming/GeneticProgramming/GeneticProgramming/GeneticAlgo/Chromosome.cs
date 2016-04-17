@@ -13,18 +13,25 @@ namespace GeneticProgramming
 
         public Chromosome(int aBitCount)
         {
+            #region Debug Stuff
+            string outputDebug = "";
+            #endregion
+
             m_ChromosomeBit = new byte[aBitCount];
             byte randomByte;
-            string outputDebug = "";
             for (int i = 0; i < aBitCount; i++)
             {
                 randomByte = Convert.ToByte(Ressources.m_Random.Next(2));
-                outputDebug += randomByte;
-
                 m_ChromosomeBit[i] = randomByte;
+
+                #region Debug Stuff
+                outputDebug += randomByte;
+                #endregion
             }
 
+            #region Debug Stuff
             Console.WriteLine(outputDebug);
+            #endregion
         }
     }
 }
