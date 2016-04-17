@@ -11,7 +11,10 @@ namespace GeneticProgramming
     /// Manage all the textures sound and other stuffs
     /// </summary>
     class Ressources
-    {
+    { 
+        //Create only one time the random
+        public static Random m_Random = new Random();
+
         public static Texture2D Base_Texture, Outline_Texture, Gazon_Texture, Rock_Texture;
         public static void Load(ContentManager Content)
         {
