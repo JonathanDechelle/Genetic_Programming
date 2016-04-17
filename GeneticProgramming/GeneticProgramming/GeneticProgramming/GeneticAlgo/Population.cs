@@ -36,11 +36,11 @@ namespace GeneticProgramming
             }
         }
 
-        public double[] GetAdaptationOrderedByHighestPerformance()
+        public Chromosome[] GetAdaptationOrderedByHighestPerformance()
         {
             GetAdaptationOrderedByLowestPerformance();
             int count = m_PopulationCount;
-            double[] adaptations = new double[count];
+            Chromosome[] chromosomes = new Chromosome[count];
             int higherThan;
 
             for (int i = 0; i < count; i++)
@@ -59,16 +59,16 @@ namespace GeneticProgramming
                     }
                 }
 
-                adaptations[higherThan] = m_Chromosomes[i].m_Adaptation;
+                chromosomes[higherThan] = m_Chromosomes[i];
             }
 
-            return adaptations;
+            return chromosomes;
         }
 
-        public double[] GetAdaptationOrderedByLowestPerformance()
+        public Chromosome[] GetAdaptationOrderedByLowestPerformance()
         {
             int count = m_PopulationCount;
-            double[] adaptations = new double[count];
+            Chromosome[] chromosomes = new Chromosome[count];
             int lowerThan;
 
             for (int i = 0; i < count; i++)
@@ -87,10 +87,10 @@ namespace GeneticProgramming
                     }
                 }
 
-                adaptations[lowerThan] = m_Chromosomes[i].m_Adaptation;
+                chromosomes[lowerThan] = m_Chromosomes[i];
             }
 
-            return adaptations;
+            return chromosomes;
         }
 
         public override string ToString()
