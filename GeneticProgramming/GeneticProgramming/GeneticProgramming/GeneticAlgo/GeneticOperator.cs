@@ -40,32 +40,49 @@ namespace GeneticProgramming
 
         public static Chromosome ReproductionByRank(Population aPopulation)
         {
-            aPopulation.GetAdaptationOrderedByHighestPerformance();
+            Chromosome[] orderedChromosomeByRank = aPopulation.GetChromosomesOrderedByHighestPerformance();
+            double[] rankScores = new double[aPopulation.m_PopulationCount];
+            double sumRank = 0;
+            for (int i = 0; i < aPopulation.m_PopulationCount; i++)
+            {
+                rankScores[i] = i + 1;
+                sumRank += i;
+            }
 
-            Console.Write("\r\nReproductionByRank");
-            return ReproductionByRoulette(aPopulation);
+            Console.Write("\r\nReproductionByRank\r\n");
+            ReproductionByAdaptation(
+                orderedChromosomeByRank,
+                rankScores, 
+                sumRank);
+
+            return null;
         }
 
-        public static Chromosome ReproductionByRoulette(Population aPopulation)
+        public static Chromosome ReproductionByRoulette(Chromosome[] aChromosomes, double[] aAdaptations, double aAdaptationSum)
+        {
+            Console.Write("\r\nBest in ReproductionByRoulette\r\n");
+            return ReproductionByAdaptation(aChromosomes, aAdaptations, aAdaptationSum);
+        }
+
+        private static Chromosome ReproductionByAdaptation(Chromosome[] aChromosomes, double[] aAdaptations, double aAdaptationSum)
         {
             double randomPercent = Ressources.m_Random.NextDouble();
             double currentAdaptationSum = 0;
             double adaptationPercent = 0;
             Chromosome currentChromosome = null;
-            Console.Write("\r\nBest in ReproductionByRoulette\r\n");
 
-            for (int i = 0; i < aPopulation.m_PopulationCount; i++)
+            for (int i = 0; i < aChromosomes.Length; i++)
             {
-                currentChromosome = aPopulation.m_Chromosomes[i];
-                currentAdaptationSum += currentChromosome.m_Adaptation;
+                currentAdaptationSum += aAdaptations[i];
 
-                adaptationPercent = currentAdaptationSum / aPopulation.m_AdaptationSum;
+                adaptationPercent = currentAdaptationSum / aAdaptationSum;
                 if (adaptationPercent > randomPercent)
                 {
+                    currentChromosome = aChromosomes[i];
                     break;
                 }
             }
-
+            
             string debutText = currentChromosome == null ?
                 "No chromosome is good" : 
                 currentChromosome.ToString();
