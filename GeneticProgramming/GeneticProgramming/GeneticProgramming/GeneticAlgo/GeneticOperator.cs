@@ -38,9 +38,12 @@ namespace GeneticProgramming
             }
         }
 
-        public static void ReproductionByRank(Population aPopulation)
+        public static Chromosome ReproductionByRank(Population aPopulation)
         {
+            aPopulation.GetAdaptationOrderedByHighestPerformance();
 
+            Console.Write("\r\nReproductionByRank");
+            return ReproductionByRoulette(aPopulation);
         }
 
         public static Chromosome ReproductionByRoulette(Population aPopulation)
@@ -53,7 +56,7 @@ namespace GeneticProgramming
 
             for (int i = 0; i < aPopulation.m_PopulationCount; i++)
             {
-                currentChromosome = aPopulation.m_Individuals[i];
+                currentChromosome = aPopulation.m_Chromosomes[i];
                 currentAdaptationSum += currentChromosome.m_Adaptation;
 
                 adaptationPercent = currentAdaptationSum / aPopulation.m_AdaptationSum;
@@ -67,7 +70,6 @@ namespace GeneticProgramming
                 "No chromosome is good" : 
                 currentChromosome.ToString();
             Console.WriteLine(debutText);
-            Console.Write("\r\n\r\n");
 
             return currentChromosome;
         }

@@ -9,7 +9,7 @@ namespace GeneticProgramming
     {
         public double m_AdaptationSum;
         public int m_PopulationCount = 10;
-        public List<Chromosome> m_Individuals = new List<Chromosome>();
+        public List<Chromosome> m_Chromosomes = new List<Chromosome>();
 
         private int m_ChromosomeBitCount = 4;
 
@@ -18,8 +18,8 @@ namespace GeneticProgramming
             Console.WriteLine("\r\nGeneratePopulation count = " + m_PopulationCount);
             for (int i = 0; i < m_PopulationCount; i++)
             {
-                Chromosome individual = new Chromosome(m_ChromosomeBitCount);
-                m_Individuals.Add(individual);
+                Chromosome chromosome = new Chromosome(m_ChromosomeBitCount);
+                m_Chromosomes.Add(chromosome);
             }
         }
 
@@ -31,16 +31,50 @@ namespace GeneticProgramming
                 /* TO DO  CALCUL*/
                 //Fake calcul for now
                 double randomAdaptation = Ressources.m_Random.Next(500);
-                m_Individuals[i].m_Adaptation = randomAdaptation;
+                m_Chromosomes[i].m_Adaptation = randomAdaptation;
                 m_AdaptationSum += randomAdaptation;
             }
+        }
+
+        public double[] GetAdaptationOrderedByHighestPerformance()
+        {
+            int count = m_PopulationCount;
+            double[] adaptations = new double[count];
+            double[] tempAdaptations = new double[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                tempAdaptations[i] = m_Chromosomes[i].m_Adaptation;
+
+                if (i == 0)
+                {
+                    adaptations[i] = tempAdaptations[i];
+                    continue;
+                }
+
+                for (int j = 0; j < i; j++)
+                {
+                    if (adaptations[j] >= tempAdaptations[i])
+                    {
+                        double temp = adaptations[j];
+                        adaptations[j] = tempAdaptations[i];
+                        adaptations[i] = temp;
+                    }
+                    else
+                    {
+                        adaptations[i] = tempAdaptations[i];
+                    }
+                }
+            }
+
+            return adaptations;
         }
 
         public override string ToString()
         {
             for (int i = 0; i < m_PopulationCount; i++)
             {
-                Console.WriteLine(m_Individuals[i].ToString());
+                Console.WriteLine(m_Chromosomes[i].ToString());
             }
 
             return "";
