@@ -52,6 +52,7 @@ namespace GeneticProgramming
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            Console.Read();
             base.Update(gameTime);
         }
 

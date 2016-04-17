@@ -7,9 +7,8 @@ namespace GeneticProgramming
 {
     public class GeneticOperator
     {
-        private Random m_Random = new Random();
-        private double m_CrossOverPercent;
-        private double m_MutationPercent;
+        private static double m_CrossOverPercent;
+        private static double m_MutationPercent;
 
         public GeneticOperator(double aCrossOverPercent, double aMutationPercent) 
         {
@@ -21,7 +20,7 @@ namespace GeneticProgramming
                         échangé avec son homologue sur l’autre chromosome */
         public void CrossOver(Chromosome aChromosome)
         {
-            double crossOverPossibility = m_Random.NextDouble();
+            double crossOverPossibility = Ressources.m_Random.NextDouble();
             if (crossOverPossibility > m_CrossOverPercent)
             {
                 return;
@@ -32,7 +31,7 @@ namespace GeneticProgramming
         //mutation : Possibilité de chance q’un bit mute (passer de 1 à 0 ou de 0 à 1)
         public void Mutate()
         {
-            double mutationPossibility = m_Random.NextDouble();
+            double mutationPossibility = Ressources.m_Random.NextDouble();
             if (mutationPossibility > m_MutationPercent)
             {
                 return;
@@ -44,10 +43,24 @@ namespace GeneticProgramming
 
         }
 
-        public static void ReproductionByRoulette(Population aPopulation)
+        public static Chromosome ReproductionByRoulette(Population aPopulation)
         {
-          
+            double randomPercent = Ressources.m_Random.NextDouble();
+            double percentSum = 0;
+            Chromosome currentChromosome = null;
 
+            for (int i = 0; i < aPopulation.m_PopulationCount; i++)
+            {
+                currentChromosome = aPopulation.m_Individuals[i];
+                percentSum += currentChromosome.m_Adaptation;
+
+                if (randomPercent < percentSum)
+                {
+                    return currentChromosome;
+                }
+            }
+
+            return currentChromosome;
         }
 
         public static void ReproductionByTournamenent(Population aPopulation)
