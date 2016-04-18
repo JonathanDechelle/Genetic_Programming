@@ -57,10 +57,13 @@ namespace GeneticProgramming
                 sumRank);
         }
 
-        public static Chromosome ReproductionByRoulette(Chromosome[] aChromosomes, double[] aAdaptations, double aAdaptationSum)
+        public static Chromosome ReproductionByRoulette(Population aPopulation)
         {
             Console.Write("\r\nBest Chromosome in Reproduction By Roulette\r\n");
-            return ReproductionByAdaptation(aChromosomes, aAdaptations, aAdaptationSum);
+            return ReproductionByAdaptation(
+                aPopulation.GetChromosomes(), 
+                aPopulation.GetCurrentPopulationAdaptation(), 
+                aPopulation.GetAdaptationTotal());
         }
 
         private static Chromosome ReproductionByAdaptation(Chromosome[] aChromosomes, double[] aAdaptations, double aAdaptationSum)

@@ -14,10 +14,7 @@ namespace GeneticProgramming
             population.ComputeAdaptation();
 
             population.ToString();
-            Chromosome bestByRoulette = GeneticOperator.ReproductionByRoulette(
-                population.GetChromosomes(),
-                population.GetCurrentPopulationAdaptation(), 
-                population.GetAdaptationTotal());
+            Chromosome bestByRoulette = GeneticOperator.ReproductionByRoulette(population);
 
             Chromosome bestByRank = GeneticOperator.ReproductionByRank(population);
 
