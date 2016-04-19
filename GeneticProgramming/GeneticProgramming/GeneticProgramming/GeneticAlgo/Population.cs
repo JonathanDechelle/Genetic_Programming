@@ -11,12 +11,12 @@ namespace GeneticProgramming
         private int m_ChromosomeBitCount = 4;
         private Chromosome[] m_Chromosomes;
         
-        public void GeneratePopulation(int aPopulationCount)
+        public void GeneratePopulation(int aPopulationCount, int aNbParamaters)
         {
             m_Chromosomes = new Chromosome[aPopulationCount];
             for (int i = 0; i < aPopulationCount; i++)
             {
-                m_Chromosomes[i] = new Chromosome(m_ChromosomeBitCount);
+                m_Chromosomes[i] = new Chromosome(m_ChromosomeBitCount, aNbParamaters);
             }
         }
 
@@ -137,6 +137,7 @@ namespace GeneticProgramming
                 Console.WriteLine(m_Chromosomes[i].ToString());
             }
 
+            Console.WriteLine("");
             return "";
         }
     }

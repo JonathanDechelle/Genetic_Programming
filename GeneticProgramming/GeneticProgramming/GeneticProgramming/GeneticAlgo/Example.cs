@@ -10,7 +10,7 @@ namespace GeneticProgramming
         public static void GenerateSimpleGPExample()
         {
             Population population = new Population();
-            population.GeneratePopulation(10);
+            population.GeneratePopulation(10, 4);
             population.ComputeAdaptation();
 
             population.ToString();

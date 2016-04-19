@@ -26,15 +26,17 @@ namespace GeneticProgramming
                         échangé avec son homologue sur l’autre chromosome */
         public static void CrossOver1Point(Population aPopulation, float aPercentChromosomeUsed)
         {
+            Console.WriteLine("CrossOver1Point");
             int affectedChromosomes = (int)(aPopulation.GetCount() * aPercentChromosomeUsed);
             while (affectedChromosomes > PAIR_GAP - 1)
             {
-                Chromosome chromosome1 = ReproductionByRoulette(aPopulation);
+                Console.WriteLine("\r\nSelect 2 Chromosomes");
+                Chromosome chromosome1 = ReproductionByRoulette(aPopulation, false);
                 Chromosome chromosome2 = null;
 
                 while (chromosome2 == null || chromosome2 == chromosome1)
                 {
-                    chromosome2 = ReproductionByRoulette(aPopulation);
+                    chromosome2 = ReproductionByRoulette(aPopulation, false);
                 }
                 
                 //get cross Point
@@ -50,6 +52,11 @@ namespace GeneticProgramming
                     clonedChromosome1.SetGeneAt(i, c2Gene);
                     clonedChromosome2.SetGeneAt(i, c1Gene);
                 }
+
+                Console.WriteLine("\r\nAdded new Chromosomes");
+                Console.WriteLine(clonedChromosome1.ToString());
+                Console.WriteLine(clonedChromosome2.ToString());
+
                 affectedChromosomes -= PAIR_GAP;
             }
         }
@@ -87,16 +94,19 @@ namespace GeneticProgramming
                 sumRank += i;
             }
 
-            Console.Write("\r\nBest Chromosome in Reproduction By Rank\r\n");
+            Console.WriteLine("Best Chromosome in Reproduction By Rank");
             return ReproductionByAdaptation(
                 orderedChromosomeByRank,
                 rankScores, 
                 sumRank);
         }
 
-        public static Chromosome ReproductionByRoulette(Population aPopulation)
+        public static Chromosome ReproductionByRoulette(Population aPopulation, bool aDebug = true)
         {
-            Console.Write("\r\nBest Chromosome in Reproduction By Roulette\r\n");
+            if (aDebug)
+            {
+                Console.WriteLine("Best Chromosome in Reproduction By Roulette");
+            }
             return ReproductionByAdaptation(
                 aPopulation.GetChromosomes(), 
                 aPopulation.GetCurrentPopulationAdaptation(), 

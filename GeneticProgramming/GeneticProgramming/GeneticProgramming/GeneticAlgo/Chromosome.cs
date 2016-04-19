@@ -21,7 +21,7 @@ namespace GeneticProgramming
         private const string CHROMOSOME_STRING_FORMAT = "Bytes = {0} Adaptation = {1}";
         #endregion
 
-        public Chromosome(int aBitCount)
+        public Chromosome(int aBitCount, int aNbParameter)
         {
             /* TODO add argument for nb parameter 
              0 = back
@@ -33,7 +33,7 @@ namespace GeneticProgramming
             byte randomByte;
             for (int i = 0; i < aBitCount; i++)
             {
-                randomByte = Convert.ToByte(Ressources.m_Random.Next(2));
+                randomByte = Convert.ToByte(Ressources.m_Random.Next(aNbParameter));
                 m_ChromosomeBit[i] = randomByte;
             }
 
