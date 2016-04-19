@@ -15,6 +15,8 @@ namespace GeneticProgramming
             : base(aPosition)
         {
             m_Color = Microsoft.Xna.Framework.Color.CornflowerBlue;
+
+            m_OutLine = Ressources.Outline_Texture;
             //m_Texture = Ressources.Gazon_Texture;
         }
     }
