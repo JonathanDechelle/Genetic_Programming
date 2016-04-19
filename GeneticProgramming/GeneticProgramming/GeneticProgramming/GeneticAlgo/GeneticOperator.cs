@@ -9,6 +9,7 @@ namespace GeneticProgramming
     {
         private static double m_CrossOverPercent;
         private static double m_MutationPercent;
+        private const int PAIR_GAP = 2;
 
         public GeneticOperator(double aCrossOverPercent, double aMutationPercent) 
         {
@@ -20,10 +21,8 @@ namespace GeneticProgramming
                         échangé avec son homologue sur l’autre chromosome */
         public static void CrossOver1Point(Population aPopulation, float aPercentChromosomeUsed)
         {
-            
-            const int pairGap = 2;
             int affectedChromosomes = (int)(aPopulation.GetCount() * aPercentChromosomeUsed);
-            while (affectedChromosomes > pairGap - 1)
+            while (affectedChromosomes > PAIR_GAP - 1)
             {
                 Chromosome chromosome1 = ReproductionByRoulette(aPopulation);
                 Chromosome chromosome2 = null;
@@ -46,7 +45,7 @@ namespace GeneticProgramming
                     clonedChromosome1.SetGeneAt(i, c2Gene);
                     clonedChromosome2.SetGeneAt(i, c1Gene);
                 }
-                affectedChromosomes -= pairGap;
+                affectedChromosomes -= PAIR_GAP;
             }
         }
 
@@ -117,10 +116,8 @@ namespace GeneticProgramming
 
         public static Chromosome[] ReproductionByTournamenent(Population aPopulation, int aMinChromosomes)
         {
-            const int pairGap = 2;
-
             int populationCount = aPopulation.GetCount();
-            int randomStartIndex = Ressources.m_Random.Next(aMinChromosomes - pairGap);
+            int randomStartIndex = Ressources.m_Random.Next(aMinChromosomes - PAIR_GAP);
             if (randomStartIndex < aMinChromosomes)
             {
                 randomStartIndex = aMinChromosomes;
@@ -129,7 +126,7 @@ namespace GeneticProgramming
             double chanceToBeSelected = 0.90;
 
             List<Chromosome> chromosomesWinner = new List<Chromosome>();
-            for (int i = randomStartIndex; i > 0 + pairGap; i -= pairGap)
+            for (int i = randomStartIndex; i > 0 + PAIR_GAP; i -= PAIR_GAP)
             {
                 Chromosome currentChromosome = aPopulation.GetChromosomeAt(i);
                 Chromosome nextChromosome = aPopulation.GetChromosomeAt(i + 1);
