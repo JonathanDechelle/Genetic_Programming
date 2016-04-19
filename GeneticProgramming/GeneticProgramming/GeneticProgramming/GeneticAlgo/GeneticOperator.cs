@@ -17,6 +17,11 @@ namespace GeneticProgramming
             m_MutationPercent = aMutationPercent;
         }
 
+        private void SetMutationProbability(float aPercent)
+        {
+            m_MutationPercent = aPercent;
+        }
+
         /*enjambement : Possibilité de chance qu’un bit soit
                         échangé avec son homologue sur l’autre chromosome */
         public static void CrossOver1Point(Population aPopulation, float aPercentChromosomeUsed)
@@ -50,12 +55,23 @@ namespace GeneticProgramming
         }
 
         //mutation : Possibilité de chance q’un bit mute (passer de 1 à 0 ou de 0 à 1)
-        public void Mutate()
+        public void Mutate(Population aPopulation)
         {
-            double mutationPossibility = Ressources.m_Random.NextDouble();
-            if (mutationPossibility > m_MutationPercent)
+            for (int i = 0; i < aPopulation.GetCount(); i++)
             {
-                return;
+                Chromosome chromosome = aPopulation.GetChromosomeAt(i);
+                for (int j = 0; j < chromosome.GetLenght(); j++)
+                {
+                    double mutationPossibility = Ressources.m_Random.NextDouble();
+                    if (mutationPossibility > m_MutationPercent)
+                    {
+                        continue;
+                    }
+
+                    int gene = chromosome.GetGeneAt(j);
+                    gene = Math.Abs(gene - 1);
+                    chromosome.SetGeneAt(j, gene);
+                }
             }
         }
 
