@@ -18,14 +18,36 @@ namespace GeneticProgramming
 
         /*enjambement : Possibilité de chance qu’un bit soit
                         échangé avec son homologue sur l’autre chromosome */
-        public void CrossOver(Chromosome aChromosome)
+        public static void CrossOver1Point(Population aPopulation, float aPercentChromosomeUsed)
         {
-            double crossOverPossibility = Ressources.m_Random.NextDouble();
-            if (crossOverPossibility > m_CrossOverPercent)
+            
+            const int pairGap = 2;
+            int affectedChromosomes = (int)(aPopulation.GetCount() * aPercentChromosomeUsed);
+            while (affectedChromosomes > pairGap - 1)
             {
-                return;
-            }
+                Chromosome chromosome1 = ReproductionByRoulette(aPopulation);
+                Chromosome chromosome2 = null;
 
+                while (chromosome2 == null || chromosome2 == chromosome1)
+                {
+                    chromosome2 = ReproductionByRoulette(aPopulation);
+                }
+                
+                //get cross Point
+                int maxPoint = chromosome1.GetLenght();
+                int crossPoint = Ressources.m_Random.Next(0, maxPoint);
+                Chromosome clonedChromosome1 = chromosome1.Clone();
+                Chromosome clonedChromosome2 = chromosome2.Clone();
+
+                for (int i = crossPoint; i < maxPoint; i++)
+                {
+                    int c1Gene = clonedChromosome1.GetGeneAt(i);
+                    int c2Gene = clonedChromosome2.GetGeneAt(i);
+                    clonedChromosome1.SetGeneAt(i, c2Gene);
+                    clonedChromosome2.SetGeneAt(i, c1Gene);
+                }
+                affectedChromosomes -= pairGap;
+            }
         }
 
         //mutation : Possibilité de chance q’un bit mute (passer de 1 à 0 ou de 0 à 1)

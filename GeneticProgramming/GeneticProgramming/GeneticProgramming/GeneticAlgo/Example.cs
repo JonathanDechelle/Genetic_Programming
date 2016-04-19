@@ -19,13 +19,15 @@ namespace GeneticProgramming
             Chromosome bestByRank = GeneticOperator.ReproductionByRank(population);
 
 
-            Chromosome[] currentChromosomes = population.GetChromosomes();
-            int populationHalfCount = population.GetCount() / 2;
-
-            currentChromosomes = GeneticOperator.ReproductionByTournamenent(population, populationHalfCount);
-            population.SetChromosomes(currentChromosomes);
+            //Chromosome[] currentChromosomes = population.GetChromosomes();
+            //int populationHalfCount = population.GetCount() / 2;
+            //currentChromosomes = GeneticOperator.ReproductionByTournamenent(population, populationHalfCount);
+            //population.SetChromosomes(currentChromosomes);
 
             population.ToString();
+
+            //Evolution
+            GeneticOperator.CrossOver1Point(population, 0.5f);
         }
     }
 }
