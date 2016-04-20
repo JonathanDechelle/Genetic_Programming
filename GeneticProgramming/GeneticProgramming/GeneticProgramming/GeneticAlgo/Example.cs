@@ -34,6 +34,7 @@ namespace GeneticProgramming
                     if (chromosomesWinner != null || chromosomesWinner.Length > 0)
                     {
                         newPopulation.AddChromosomes(chromosomesWinner);
+                        /* TODO REMOVE chromosomes in population */
                     }
 
                     //newPopulation.ToString();
@@ -42,6 +43,14 @@ namespace GeneticProgramming
                     GeneticOperator.CrossOver1Point(newPopulation);
                     GeneticOperator.Mutate(newPopulation);
                 }
+
+                /* TODO in case new population is greater the population
+                 while(newPopulation.GetCout() < CHROMOSOMES_PER_GENERATION)
+                 * {
+                 * generate new chromosomes
+                 * }
+                 
+                 */
 
                 population.SetChromosomes(newPopulation.GetChromosomes());
             }
