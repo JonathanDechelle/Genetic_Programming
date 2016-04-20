@@ -9,13 +9,17 @@ namespace GeneticProgramming
     {
         public static void GenerateSimpleGPExample()
         {
+            const int CHROMOSOMES_PER_GENERATION = 10;
+            const int PARAMATERS_PER_CHROMOSOMES = 4;
+
             GeneticOperator.SetMutationProbability(0.05f);
             GeneticOperator.SetCrossOverOnChromosomeProbability(0.5f);
             GeneticOperator.SetReproductionOnChromosomeProbability(0.65f);
             GeneticOperator.SetSelectionForReproductionProbability(0.95f);
 
-            Population population = new Population();
-            population.GeneratePopulation(10, 4);
+            Population population = new Population(CHROMOSOMES_PER_GENERATION);
+            population.GeneratePopulation(PARAMATERS_PER_CHROMOSOMES);
+
 
             population.ComputeAdaptation();
             population.ToString();
@@ -27,17 +31,19 @@ namespace GeneticProgramming
             }
 
 			//Reproduction
-            /*Chromosome[] currentChromosomes = population.GetChromosomes();
-            currentChromosomes = GeneticOperator.ReproductionByTournamenent(population);
-            if (currentChromosomes != null)
-            {
-                population.SetChromosomes(currentChromosomes);
-                population.ToString();
-            }*/
+            Population newPopulation = new Population(CHROMOSOMES_PER_GENERATION);
 
+            Chromosome[] chromosomesWinner = GeneticOperator.ReproductionByTournamenent(population);
+            if (chromosomesWinner != null)
+            {
+                newPopulation.AddChromosomes(chromosomesWinner);
+            }
+
+            newPopulation.ToString();
+            
             //Variation Possibility
-            GeneticOperator.CrossOver1Point(population);
-            GeneticOperator.Mutate(population);
+            GeneticOperator.CrossOver1Point(newPopulation);
+            GeneticOperator.Mutate(newPopulation);
         }
 
         /*

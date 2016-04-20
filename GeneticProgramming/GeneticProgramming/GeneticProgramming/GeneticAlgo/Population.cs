@@ -8,15 +8,19 @@ namespace GeneticProgramming
     public class Population
     {
         private double m_AdaptationSum;
-        private int m_MaxAdaptation;
-        private int m_MinAdaptation;
+        private double m_MaxAdaptation;
+        private double m_MinAdaptation;
         private int m_ChromosomeBitCount = 4;
         private Chromosome[] m_Chromosomes;
-        
-        public void GeneratePopulation(int aPopulationCount, int aNbParamaters)
+
+        public Population(int aPopulationCount)
         {
             m_Chromosomes = new Chromosome[aPopulationCount];
-            for (int i = 0; i < aPopulationCount; i++)
+        }
+
+        public void GeneratePopulation(int aNbParamaters)
+        {
+            for (int i = 0; i < GetCount(); i++)
             {
                 m_Chromosomes[i] = new Chromosome(m_ChromosomeBitCount, aNbParamaters);
             }
@@ -35,6 +39,24 @@ namespace GeneticProgramming
         public void SetChromosomes(Chromosome[] aChromosomes)
         {
             m_Chromosomes = aChromosomes;
+        }
+
+        public void AddChromosomes(Chromosome[] aNewChromosomes)
+        {
+            int arrayIndex = 0;
+            for (int i = 0; i < GetCount(); i++)
+            {
+                if (m_Chromosomes[i] == null)
+                {
+                    if (arrayIndex >= aNewChromosomes.Length)
+                    {
+                        break;
+                    }
+
+                    m_Chromosomes[i] = aNewChromosomes[arrayIndex];
+                    arrayIndex++;
+                }
+            }
         }
 
         public int GetCount()
@@ -59,6 +81,9 @@ namespace GeneticProgramming
                 m_Chromosomes[i].m_Adaptation = randomAdaptation;
                 m_AdaptationSum += randomAdaptation;
             }
+
+            m_MinAdaptation = GetMinAdaptation();
+            m_MaxAdaptation = GetMaxAdaptation();
         }
 
         public double[] GetCurrentPopulationAdaptation()
