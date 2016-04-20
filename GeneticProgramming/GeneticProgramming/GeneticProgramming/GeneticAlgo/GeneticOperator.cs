@@ -42,12 +42,12 @@ namespace GeneticProgramming
             while (affectedChromosomes > PAIR_GAP - 1)
             {
                 Console.WriteLine("\r\nSelect 2 Chromosomes");
-                Chromosome chromosome1 = ReproductionByRoulette(aPopulation, false);
+                Chromosome chromosome1 = aPopulation.GetRandomChromosome();
                 Chromosome chromosome2 = null;
 
                 while (chromosome2 == null || chromosome2 == chromosome1)
                 {
-                    chromosome2 = ReproductionByRoulette(aPopulation, false);
+                    chromosome2 = aPopulation.GetRandomChromosome();
                 }
                 
                 //get cross Point

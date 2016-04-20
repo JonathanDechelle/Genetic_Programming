@@ -11,6 +11,7 @@ namespace GeneticProgramming
         private double m_MaxAdaptation;
         private double m_MinAdaptation;
         private int m_ChromosomeBitCount = 4;
+        private int m_Count;
         private Chromosome[] m_Chromosomes;
 
         public Population(int aPopulationCount)
@@ -20,7 +21,7 @@ namespace GeneticProgramming
 
         public void GeneratePopulation(int aNbParamaters)
         {
-            for (int i = 0; i < GetCount(); i++)
+            for (int i = 0; i < m_Chromosomes.Length; i++)
             {
                 m_Chromosomes[i] = new Chromosome(m_ChromosomeBitCount, aNbParamaters);
             }
@@ -31,6 +32,12 @@ namespace GeneticProgramming
             return m_Chromosomes[aIndex];
         }
 
+        public Chromosome GetRandomChromosome()
+        {
+            int aIndex = Ressources.m_Random.Next(GetCount());
+            return GetChromosomeAt(aIndex);
+        }
+
         public Chromosome[] GetChromosomes()
         {
             return m_Chromosomes;
@@ -39,12 +46,13 @@ namespace GeneticProgramming
         public void SetChromosomes(Chromosome[] aChromosomes)
         {
             m_Chromosomes = aChromosomes;
+            m_Count = GetCount();
         }
 
         public void AddChromosomes(Chromosome[] aNewChromosomes)
         {
             int arrayIndex = 0;
-            for (int i = 0; i < GetCount(); i++)
+            for (int i = 0; i < m_Chromosomes.Length; i++)
             {
                 if (m_Chromosomes[i] == null)
                 {
@@ -57,11 +65,22 @@ namespace GeneticProgramming
                     arrayIndex++;
                 }
             }
+
+            m_Count = GetCount();
         }
 
         public int GetCount()
         {
-            return m_Chromosomes.Length;
+            int count = 0;
+            for (int i = 0; i < m_Chromosomes.Length; i++)
+            {
+                if (m_Chromosomes[i] != null)
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         public double GetAdaptationTotal()

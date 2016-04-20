@@ -20,30 +20,31 @@ namespace GeneticProgramming
             Population population = new Population(CHROMOSOMES_PER_GENERATION);
             population.GeneratePopulation(PARAMATERS_PER_CHROMOSOMES);
 
-
-            population.ComputeAdaptation();
-            population.ToString();
-
-            if (population.GetMaxAdaptation() >= double.MaxValue) //arbitrary value for now
+            while (population.GetMaxAdaptation() < double.MaxValue)
             {
-				//IA BEAT THE GAME
-                //break;
+                population.ComputeAdaptation();
+                population.ToString();
+
+                //Reproduction
+                Population newPopulation = new Population(CHROMOSOMES_PER_GENERATION);
+
+                while (newPopulation.GetCount() < population.GetCount())
+                {
+                    Chromosome[] chromosomesWinner = GeneticOperator.ReproductionByTournamenent(population);
+                    if (chromosomesWinner != null || chromosomesWinner.Length > 0)
+                    {
+                        newPopulation.AddChromosomes(chromosomesWinner);
+                    }
+
+                    //newPopulation.ToString();
+
+                    //Variation Possibility
+                    GeneticOperator.CrossOver1Point(newPopulation);
+                    GeneticOperator.Mutate(newPopulation);
+                }
+
+                population.SetChromosomes(newPopulation.GetChromosomes());
             }
-
-			//Reproduction
-            Population newPopulation = new Population(CHROMOSOMES_PER_GENERATION);
-
-            Chromosome[] chromosomesWinner = GeneticOperator.ReproductionByTournamenent(population);
-            if (chromosomesWinner != null)
-            {
-                newPopulation.AddChromosomes(chromosomesWinner);
-            }
-
-            newPopulation.ToString();
-            
-            //Variation Possibility
-            GeneticOperator.CrossOver1Point(newPopulation);
-            GeneticOperator.Mutate(newPopulation);
         }
 
         /*
