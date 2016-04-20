@@ -7,27 +7,38 @@ namespace GeneticProgramming
 {
     public class GeneticOperator
     {
-        private static double m_CrossOverPercent;
-        private static double m_MutationPercent;
+        private static float m_MutationPercent;
+        private static float m_CrossOverPercent;
+        private static float m_ReproductionOnChromosomePercent;
+        private static float m_SelectionForReproductionPercent;
         private const int PAIR_GAP = 2;
 
-        public GeneticOperator(double aCrossOverPercent, double aMutationPercent) 
-        {
-            m_CrossOverPercent = aCrossOverPercent;
-            m_MutationPercent = aMutationPercent;
-        }
-
-        private void SetMutationProbability(float aPercent)
+        public static void SetMutationProbability(float aPercent)
         {
             m_MutationPercent = aPercent;
         }
 
+        public static void SetCrossOverOnChromosomeProbability(float aPercent)
+        {
+            m_CrossOverPercent = aPercent;
+        }
+
+        public static void SetReproductionOnChromosomeProbability(float aPercent)
+        {
+            m_ReproductionOnChromosomePercent = aPercent;
+        }
+
+        public static void SetSelectionForReproductionProbability(float aPercent)
+        {
+            m_SelectionForReproductionPercent = aPercent;
+        }
+
         /*enjambement : Possibilité de chance qu’un bit soit
                         échangé avec son homologue sur l’autre chromosome */
-        public static void CrossOver1Point(Population aPopulation, float aPercentChromosomeUsed)
+        public static void CrossOver1Point(Population aPopulation)
         {
             Console.WriteLine("CrossOver1Point");
-            int affectedChromosomes = (int)(aPopulation.GetCount() * aPercentChromosomeUsed);
+            int affectedChromosomes = (int)(aPopulation.GetCount() * m_CrossOverPercent);
             while (affectedChromosomes > PAIR_GAP - 1)
             {
                 Console.WriteLine("\r\nSelect 2 Chromosomes");
@@ -62,7 +73,7 @@ namespace GeneticProgramming
         }
 
         //mutation : Possibilité de chance q’un bit mute (passer de 1 à 0 ou de 0 à 1)
-        public void Mutate(Population aPopulation)
+        public static void Mutate(Population aPopulation)
         {
             for (int i = 0; i < aPopulation.GetCount(); i++)
             {
@@ -140,19 +151,19 @@ namespace GeneticProgramming
             return currentChromosome;
         }
 
-        public static Chromosome[] ReproductionByTournamenent(Population aPopulation, int aMinChromosomes)
+        public static Chromosome[] ReproductionByTournamenent(Population aPopulation)
         {
             int populationCount = aPopulation.GetCount();
-            int randomStartIndex = Ressources.m_Random.Next(aMinChromosomes - PAIR_GAP);
-            if (randomStartIndex < aMinChromosomes)
+            int minChromosomes = (int)(populationCount * m_ReproductionOnChromosomePercent);
+            int randomStartIndex = Ressources.m_Random.Next(minChromosomes);
+            
+            if (randomStartIndex < PAIR_GAP)
             {
-                randomStartIndex = aMinChromosomes;
+                return null;
             }
 
-            double chanceToBeSelected = 0.90;
-
             List<Chromosome> chromosomesWinner = new List<Chromosome>();
-            for (int i = randomStartIndex; i > 0 + PAIR_GAP; i -= PAIR_GAP)
+            for (int i = randomStartIndex; i > PAIR_GAP; i -= PAIR_GAP)
             {
                 Chromosome currentChromosome = aPopulation.GetChromosomeAt(i);
                 Chromosome nextChromosome = aPopulation.GetChromosomeAt(i + 1);
@@ -170,7 +181,7 @@ namespace GeneticProgramming
             for (int i = 0; i < chromosomesWinner.Count; i++)
             {
                 double randomSelection = Ressources.m_Random.NextDouble();
-                if (randomSelection > chanceToBeSelected)
+                if (randomSelection > m_SelectionForReproductionPercent)
                 {
                     chromosomesWinner.RemoveAt(i);
                 }

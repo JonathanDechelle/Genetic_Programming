@@ -8,6 +8,8 @@ namespace GeneticProgramming
     public class Population
     {
         private double m_AdaptationSum;
+        private int m_MaxAdaptation;
+        private int m_MinAdaptation;
         private int m_ChromosomeBitCount = 4;
         private Chromosome[] m_Chromosomes;
         
@@ -69,6 +71,34 @@ namespace GeneticProgramming
             }
 
             return adaptations;
+        }
+
+        public double GetMinAdaptation()
+        {
+            double min = double.MaxValue;
+            for (int i = 0; i < GetCount(); i++)
+            {
+                if (m_Chromosomes[i].m_Adaptation < min)
+                {
+                    min = m_Chromosomes[i].m_Adaptation;
+                }
+            }
+
+            return min;
+        }
+
+        public double GetMaxAdaptation()
+        {
+            double max = double.MinValue;
+            for (int i = 0; i < GetCount(); i++)
+            {
+                if (m_Chromosomes[i].m_Adaptation > max)
+                {
+                    max = m_Chromosomes[i].m_Adaptation;
+                }
+            }
+
+            return max;
         }
 
         public Chromosome[] GetChromosomesOrderedByHighestPerformance()
