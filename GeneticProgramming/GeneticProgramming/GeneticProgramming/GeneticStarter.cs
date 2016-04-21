@@ -19,6 +19,9 @@ namespace GeneticProgramming
         GraphicsDeviceManager m_Graphics;
         SpriteBatch m_SpriteBatch;
         Map m_Map;
+        IA m_IA;
+
+        private const float IA_SPEED = 1f; 
 
         public GeneticStarter()
         {
@@ -38,8 +41,11 @@ namespace GeneticProgramming
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
             Ressources.Load(Content);
             m_Map = new Map("Map_1_Easy");
+            
+            m_IA = new IA(new Vector2());
+            m_IA.m_MovementSpeed = IA_SPEED;
 
-            Example.GenerateSimpleGPExample();
+            //Example.GenerateSimpleGPExample();
         }
 
 		protected override void UnloadContent()
@@ -52,6 +58,8 @@ namespace GeneticProgramming
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            m_IA.Update();
+
             Console.Read();
             base.Update(gameTime);
         }
@@ -62,6 +70,7 @@ namespace GeneticProgramming
             m_SpriteBatch.Begin();
 
             m_Map.Draw(m_SpriteBatch);
+            m_IA.Draw(m_SpriteBatch);
 
             m_SpriteBatch.End();
             base.Draw(gameTime);
