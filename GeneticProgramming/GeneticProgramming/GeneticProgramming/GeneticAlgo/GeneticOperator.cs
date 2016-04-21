@@ -151,30 +151,35 @@ namespace GeneticProgramming
             return currentChromosome;
         }
 
-        public static Chromosome[] ReproductionByTournamenent(Population aPopulation)
+        public static Chromosome[] ReproductionByTournamenent(Population aPopulation, int aNbPair)
         {
-            int populationCount = aPopulation.GetCount();
-            int minChromosomes = (int)(populationCount * m_ReproductionOnChromosomePercent);
-            int randomStartIndex = Ressources.m_Random.Next(minChromosomes);
-            
-            if (randomStartIndex < PAIR_GAP)
+            int minChromomes = aNbPair * PAIR_GAP;
+            if (minChromomes > aPopulation.GetCount())
             {
                 return null;
             }
 
             List<Chromosome> chromosomesWinner = new List<Chromosome>();
-            for (int i = randomStartIndex; i > PAIR_GAP; i -= PAIR_GAP)
+            List<Chromosome> chromosomesLooser = new List<Chromosome>();
+
+            for (int i = 0; i < minChromomes; i += PAIR_GAP)
             {
                 Chromosome currentChromosome = aPopulation.GetChromosomeAt(i);
                 Chromosome nextChromosome = aPopulation.GetChromosomeAt(i + 1);
 
+                bool currentWin = currentChromosome.m_Adaptation > nextChromosome.m_Adaptation; 
                 Chromosome winner =
-                    currentChromosome.m_Adaptation > nextChromosome.m_Adaptation ?
- 
+                    currentWin ?
                 currentChromosome :
                 nextChromosome;
 
+                Chromosome looser =
+                    currentWin ?
+                nextChromosome :
+                currentChromosome;
+                
                 chromosomesWinner.Add(winner);
+                chromosomesLooser.Add(looser);
             }
 
             Console.Write("\r\nBest Chromosomes in Reproduction By Tournament\r\n");
@@ -188,8 +193,11 @@ namespace GeneticProgramming
                 else
                 {
                     Console.WriteLine(chromosomesWinner[i].ToString());
+                    aPopulation.RemoveChromosomes(chromosomesWinner.ToArray());
                 }
             }
+
+            aPopulation.RemoveChromosomes(chromosomesLooser.ToArray());
 
             return chromosomesWinner.ToArray();
         }

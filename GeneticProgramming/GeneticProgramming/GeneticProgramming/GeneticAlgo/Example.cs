@@ -11,6 +11,7 @@ namespace GeneticProgramming
         {
             const int CHROMOSOMES_PER_GENERATION = 10;
             const int PARAMATERS_PER_CHROMOSOMES = 4;
+            const int NUMBERS_PAIR_FOR_REPRODUCTION = 1;
 
             GeneticOperator.SetMutationProbability(0.05f);
             GeneticOperator.SetCrossOverOnChromosomeProbability(0.5f);
@@ -28,30 +29,27 @@ namespace GeneticProgramming
                 //Reproduction
                 Population newPopulation = new Population(CHROMOSOMES_PER_GENERATION);
 
-                while (newPopulation.GetCount() < population.GetCount())
+                bool hasChromosomesInPopulation = true;
+                while (hasChromosomesInPopulation)
                 {
-                    Chromosome[] chromosomesWinner = GeneticOperator.ReproductionByTournamenent(population);
-                    if (chromosomesWinner != null || chromosomesWinner.Length > 0)
+                    Chromosome[] chromosomesWinner = GeneticOperator.ReproductionByTournamenent(population, NUMBERS_PAIR_FOR_REPRODUCTION);
+                    if (chromosomesWinner == null)
                     {
-                        newPopulation.AddChromosomes(chromosomesWinner);
-                        /* TODO REMOVE chromosomes in population */
+                        hasChromosomesInPopulation = false;
+                        continue;
                     }
 
-                    //newPopulation.ToString();
-
-                    //Variation Possibility
-                    GeneticOperator.CrossOver1Point(newPopulation);
-                    GeneticOperator.Mutate(newPopulation);
+                    if (chromosomesWinner.Length > 0)
+                    {
+                        newPopulation.AddChromosomes(chromosomesWinner);
+                    }
                 }
 
-                /* TODO in case new population is greater the population
-                 while(newPopulation.GetCout() < CHROMOSOMES_PER_GENERATION)
-                 * {
-                 * generate new chromosomes
-                 * }
-                 
-                 */
+                //Variation Possibility
+                GeneticOperator.CrossOver1Point(newPopulation);
+                GeneticOperator.Mutate(newPopulation);
 
+                newPopulation.GeneratePopulation(PARAMATERS_PER_CHROMOSOMES);
                 population.SetChromosomes(newPopulation.GetChromosomes());
             }
         }

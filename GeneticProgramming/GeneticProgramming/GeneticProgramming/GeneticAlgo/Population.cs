@@ -11,7 +11,6 @@ namespace GeneticProgramming
         private double m_MaxAdaptation;
         private double m_MinAdaptation;
         private int m_ChromosomeBitCount = 4;
-        private int m_Count;
         private Chromosome[] m_Chromosomes;
 
         public Population(int aPopulationCount)
@@ -21,7 +20,7 @@ namespace GeneticProgramming
 
         public void GeneratePopulation(int aNbParamaters)
         {
-            for (int i = 0; i < m_Chromosomes.Length; i++)
+            for (int i = GetCount(); i < m_Chromosomes.Length; i++)
             {
                 m_Chromosomes[i] = new Chromosome(m_ChromosomeBitCount, aNbParamaters);
             }
@@ -46,7 +45,6 @@ namespace GeneticProgramming
         public void SetChromosomes(Chromosome[] aChromosomes)
         {
             m_Chromosomes = aChromosomes;
-            m_Count = GetCount();
         }
 
         public void AddChromosomes(Chromosome[] aNewChromosomes)
@@ -65,8 +63,37 @@ namespace GeneticProgramming
                     arrayIndex++;
                 }
             }
+        }
 
-            m_Count = GetCount();
+        public void RemoveChromosomes(Chromosome[] aChromosomesToRemove)
+        {
+            int arrayIndex = 0;
+            int arrayCount = m_Chromosomes.Length;
+            for (int i = 0; i < aChromosomesToRemove.Length; i++)
+            {
+                for (int j = 0; j < arrayCount; j++)
+                {
+                    if (m_Chromosomes[j] == aChromosomesToRemove[i])
+                    {
+                        m_Chromosomes[j] = null;
+                    }
+                }
+            }
+
+            //ReplaceElement
+            int indexToMove = 0;
+            for (int i = 0; i < arrayCount; i++)
+            {
+                if (m_Chromosomes[i] != null)
+                {
+                    Chromosome oldChromosome = GetChromosomeAt(i);
+                    m_Chromosomes[i] = null;
+                    m_Chromosomes[i - indexToMove] = oldChromosome;
+                    continue;
+                }
+
+                indexToMove++;
+            }
         }
 
         public int GetCount()
