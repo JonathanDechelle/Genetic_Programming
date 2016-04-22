@@ -103,7 +103,7 @@ namespace GeneticProgramming
 
         public bool HasElementAtIndex(Vector2 aPositionIndexed, Type aType)
         {
-            BaseObject baseObject = m_Grid[(int)aPositionIndexed.X, (int)aPositionIndexed.Y].m_Object;
+            BaseObject baseObject = m_Grid[(int)aPositionIndexed.Y, (int)aPositionIndexed.X].m_Object;
 
             return baseObject != null && baseObject.GetType() == aType;
         }
