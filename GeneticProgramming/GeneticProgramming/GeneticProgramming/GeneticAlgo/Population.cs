@@ -10,7 +10,6 @@ namespace GeneticProgramming
         private double m_AdaptationSum;
         private double m_MaxAdaptation;
         private double m_MinAdaptation;
-        private int m_ChromosomeBitCount = 4;
         private Chromosome[] m_Chromosomes;
 
         public Population(int aPopulationCount)
@@ -18,11 +17,11 @@ namespace GeneticProgramming
             m_Chromosomes = new Chromosome[aPopulationCount];
         }
 
-        public void GeneratePopulation(int aNbParamaters)
+        public void GeneratePopulation(int aChromosomeBitCount, int aNbParamaters)
         {
             for (int i = GetCount(); i < m_Chromosomes.Length; i++)
             {
-                m_Chromosomes[i] = new Chromosome(m_ChromosomeBitCount, aNbParamaters);
+                m_Chromosomes[i] = new Chromosome(aChromosomeBitCount, aNbParamaters);
             }
         }
 

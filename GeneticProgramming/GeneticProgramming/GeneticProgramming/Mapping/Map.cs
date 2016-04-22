@@ -19,6 +19,7 @@ namespace GeneticProgramming
 
     public class Map
     {
+        private int m_MaxFitness = 0;
         private int m_Width;
         private int m_Height;
         private MapTile[,] m_Grid;
@@ -50,6 +51,7 @@ namespace GeneticProgramming
                     {
                         case "ff000000": tileObject = new Wall(tilePosition); break;
                         case "ffffffff": tileObject = new Floor(tilePosition); break;
+                        case "ff0000ff": tileObject = new Parkour(tilePosition); break;
                         default: break;
                     }
 
@@ -59,8 +61,30 @@ namespace GeneticProgramming
                 }
             }
             #endregion
+
+            ComputeMaximumFitness();
         }
 
+        private void ComputeMaximumFitness() 
+        {
+            m_MaxFitness = 0;
+            for (int i = 0; i < m_Grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < m_Grid.GetLength(1); j++)
+                {
+                    if (HasElementAtIndex(new Vector2(i, j), typeof(Parkour)))
+                    {
+                        m_MaxFitness++;
+                    }
+                }
+            }
+        }
+
+        public int GetMaximumFitness()
+        {
+            return m_MaxFitness;
+        }
+          
         public Vector2 GetPositionToIndex(Vector2 aPosition)
         {
             Vector2 positionIndexed;

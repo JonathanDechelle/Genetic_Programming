@@ -16,14 +16,7 @@ namespace GeneticProgramming
         public float m_MovementSpeed;
 
         private int m_MovementIndex = 0;
-        private int[] m_Movements = new int[5]
-        {
-            1,
-            1,
-            2,
-            2,
-            2,
-        };
+        public int[] m_Movements;
 
         private float m_Timer = 0;
         private float m_BaseDistance;
@@ -34,7 +27,7 @@ namespace GeneticProgramming
         {
             m_Color = Microsoft.Xna.Framework.Color.Green;
             m_BaseDistance = m_Texture.Bounds.Width;
-            m_Timer = FAKE_FRAME_RATE * 2;
+            m_Timer = FAKE_FRAME_RATE * 2; // just for testing
         }
 
         public void Update(Map aMap)

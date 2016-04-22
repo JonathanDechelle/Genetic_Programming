@@ -68,6 +68,11 @@ namespace GeneticProgramming
             return m_ChromosomeBit[aIndex];
         }
 
+        public int[] GetGenes()
+        {
+            return m_ChromosomeBit;
+        }
+
         public void SetGeneAt(int aIndex, int aGene)
         {
             m_ChromosomeBit[aIndex] = aGene;

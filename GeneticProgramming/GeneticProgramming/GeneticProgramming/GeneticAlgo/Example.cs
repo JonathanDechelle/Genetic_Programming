@@ -7,11 +7,15 @@ namespace GeneticProgramming
 {
     public class Example
     {
-        public static void GenerateSimpleGPExample()
+        public static Chromosome bestChromosomeOfAll;
+        public static void GenerateSimpleGPExample(Map aMap)
         {
             const int CHROMOSOMES_PER_GENERATION = 10;
             const int PARAMATERS_PER_CHROMOSOMES = 4;
             const int NUMBERS_PAIR_FOR_REPRODUCTION = 1;
+            const int MAX_ADDITIONAL_TRY = 8;
+            int m_MaximumFitness = aMap.GetMaximumFitness();
+            int m_MaxTry = m_MaximumFitness + MAX_ADDITIONAL_TRY;
 
             GeneticOperator.SetMutationProbability(0.05f);
             GeneticOperator.SetCrossOverOnChromosomeProbability(0.5f);
@@ -19,11 +23,12 @@ namespace GeneticProgramming
             GeneticOperator.SetSelectionForReproductionProbability(0.95f);
 
             Population population = new Population(CHROMOSOMES_PER_GENERATION);
-            population.GeneratePopulation(PARAMATERS_PER_CHROMOSOMES);
+            population.GeneratePopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
+            population.ComputeAdaptation();
 
-            while (population.GetMaxAdaptation() < double.MaxValue)
+            while (population.GetMaxAdaptation() < m_MaximumFitness)
             {
-                population.ComputeAdaptation();
+                
                 population.ToString();
 
                 //Reproduction
@@ -49,9 +54,12 @@ namespace GeneticProgramming
                 GeneticOperator.CrossOver1Point(newPopulation);
                 GeneticOperator.Mutate(newPopulation);
 
-                newPopulation.GeneratePopulation(PARAMATERS_PER_CHROMOSOMES);
-                population.SetChromosomes(newPopulation.GetChromosomes());
+                newPopulation.GeneratePopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
+                population.SetChromosomes(newPopulation.GetChromosomes()); 
+                population.ComputeAdaptation();
             }
+
+            bestChromosomeOfAll = GeneticOperator.ReproductionByRoulette(population);
         }
 
         /*

@@ -21,7 +21,7 @@ namespace GeneticProgramming
         Map m_Map;
         IA m_IA;
 
-        private const float IA_SPEED = 1f; 
+        private const float IA_SPEED = 10f; 
 
         public GeneticStarter()
         {
@@ -45,7 +45,8 @@ namespace GeneticProgramming
             m_IA = new IA(m_Map.GetIndexToPosition(new Vector2(1,1)));
             m_IA.m_MovementSpeed = IA_SPEED;
 
-            //Example.GenerateSimpleGPExample();
+            Example.GenerateSimpleGPExample(m_Map);
+            m_IA.m_Movements = Example.bestChromosomeOfAll.GetGenes();
         }
 
 		protected override void UnloadContent()
