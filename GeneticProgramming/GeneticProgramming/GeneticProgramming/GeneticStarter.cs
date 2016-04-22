@@ -41,8 +41,8 @@ namespace GeneticProgramming
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
             Ressources.Load(Content);
             m_Map = new Map("Map_1_Easy");
-            
-            m_IA = new IA(new Vector2());
+
+            m_IA = new IA(m_Map.GetIndexToPosition(new Vector2(1,1)));
             m_IA.m_MovementSpeed = IA_SPEED;
 
             //Example.GenerateSimpleGPExample();
@@ -58,7 +58,7 @@ namespace GeneticProgramming
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            m_IA.Update();
+            m_IA.Update(m_Map);
 
             Console.Read();
             base.Update(gameTime);

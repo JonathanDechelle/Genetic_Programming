@@ -4,14 +4,24 @@ namespace GeneticProgramming
 {
     public class IA : BaseObject
     {
+        private enum EMovement
+        {
+            UP = 0,
+            DOWN = 1,
+            LEFT = 2,
+            RIGHT = 3,
+            NONE = 4
+        }
+
         public float m_MovementSpeed;
 
         private int m_MovementIndex = 0;
-        private int[] m_Movements = new int[4]
+        private int[] m_Movements = new int[5]
         {
-            3,
-            3,
             1,
+            1,
+            2,
+            2,
             2,
         };
 
@@ -24,9 +34,10 @@ namespace GeneticProgramming
         {
             m_Color = Microsoft.Xna.Framework.Color.Green;
             m_BaseDistance = m_Texture.Bounds.Width;
+            m_Timer = FAKE_FRAME_RATE * 2;
         }
 
-        public void Update()
+        public void Update(Map aMap)
         {
             if(m_MovementIndex > m_Movements.Length - 1)
             {
@@ -36,12 +47,20 @@ namespace GeneticProgramming
             m_Timer -= m_MovementSpeed;
             if (m_Timer < 0)
             {
-                switch(m_Movements[m_MovementIndex])
+                Vector2 currentPositionIndexed = aMap.GetPositionToIndex(m_Position);
+                Vector2 nextMove = Vector2.Zero;
+                switch((EMovement)m_Movements[m_MovementIndex])
                 {
-                    case 0: m_Position.Y -= m_BaseDistance; break;
-                    case 1: m_Position.Y += m_BaseDistance; break;
-                    case 2: m_Position.X -= m_BaseDistance; break;
-                    case 3: m_Position.X += m_BaseDistance; break;
+                    case EMovement.UP:    nextMove = -Vector2.UnitY; break;
+                    case EMovement.DOWN:  nextMove =  Vector2.UnitY; break;
+                    case EMovement.LEFT:  nextMove = -Vector2.UnitX; break;
+                    case EMovement.RIGHT: nextMove =  Vector2.UnitX; break;
+                }
+
+                Vector2 newPositionIndexed = currentPositionIndexed + nextMove;
+                if (!aMap.HasElementAtIndex(newPositionIndexed, typeof(Wall)))
+                {
+                    m_Position = newPositionIndexed * m_BaseDistance;
                 }
 
                 m_Timer = FAKE_FRAME_RATE;

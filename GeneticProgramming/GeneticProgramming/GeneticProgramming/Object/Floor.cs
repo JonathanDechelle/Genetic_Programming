@@ -9,7 +9,7 @@ namespace GeneticProgramming
     /// <summary>
     /// This object represent the surface where the player is allow to pass
     /// </summary>
-    class Floor:BaseObject
+    public class Floor:BaseObject
     {
         public Floor(Vector2 aPosition)
             : base(aPosition)

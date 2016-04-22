@@ -23,6 +23,9 @@ namespace GeneticProgramming
         private int m_Height;
         private MapTile[,] m_Grid;
 
+        private float m_TileWidth = Ressources.Base_Texture.Width;
+        private float m_TileHeight = Ressources.Base_Texture.Height;
+
         public Map(string MapName)
         {
             #region LoadImage and Grid
@@ -40,7 +43,7 @@ namespace GeneticProgramming
                 for (int j = 0; j < m_Width; j++)
                 {
                     BaseObject tileObject = null;
-                    Vector2 tilePosition = new Vector2(j * Ressources.Base_Texture.Width, i * Ressources.Base_Texture.Height);
+                    Vector2 tilePosition = new Vector2(j * m_TileWidth, i * m_TileHeight);
 
                     PixelColor = MapImage.GetPixel(j, i);
                     switch (PixelColor.Name)
@@ -56,6 +59,29 @@ namespace GeneticProgramming
                 }
             }
             #endregion
+        }
+
+        public Vector2 GetPositionToIndex(Vector2 aPosition)
+        {
+            Vector2 positionIndexed;
+            positionIndexed.X = aPosition.X / m_TileWidth;
+            positionIndexed.Y = aPosition.Y / m_TileHeight;
+            return positionIndexed;
+        }
+
+        public Vector2 GetIndexToPosition(Vector2 aIndex)
+        {
+            Vector2 position;
+            position.X = aIndex.X * m_TileWidth;
+            position.Y = aIndex.Y * m_TileHeight;
+            return position;
+        }
+
+        public bool HasElementAtIndex(Vector2 aPositionIndexed, Type aType)
+        {
+            BaseObject baseObject = m_Grid[(int)aPositionIndexed.X, (int)aPositionIndexed.Y].m_Object;
+
+            return baseObject != null && baseObject.GetType() == aType;
         }
 
         //Draw each object in the grid
