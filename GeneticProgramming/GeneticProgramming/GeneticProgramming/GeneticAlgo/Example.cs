@@ -16,23 +16,24 @@ namespace GeneticProgramming
             const int MAX_ADDITIONAL_TRY = 8;
             int m_MaximumFitness = aMap.GetMaximumFitness();
             int m_MaxTry = m_MaximumFitness + MAX_ADDITIONAL_TRY;
+            double currentPopulationMaxAdaptation;
 
             GeneticOperator.SetMutationProbability(0.05f);
             GeneticOperator.SetCrossOverOnChromosomeProbability(0.5f);
             GeneticOperator.SetReproductionOnChromosomeProbability(0.65f);
             GeneticOperator.SetSelectionForReproductionProbability(0.95f);
 
-            Population population = new Population(CHROMOSOMES_PER_GENERATION);
+            PopulationContour population = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
             population.GeneratePopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
             population.ComputeAdaptation();
+            currentPopulationMaxAdaptation = population.GetCurrentMaxAdaptation();
 
-            while (population.GetMaxAdaptation() < m_MaximumFitness)
+            while (currentPopulationMaxAdaptation < m_MaximumFitness)
             {
-                
                 population.ToString();
 
                 //Reproduction
-                Population newPopulation = new Population(CHROMOSOMES_PER_GENERATION);
+                PopulationContour newPopulation = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
 
                 bool hasChromosomesInPopulation = true;
                 while (hasChromosomesInPopulation)
@@ -57,6 +58,8 @@ namespace GeneticProgramming
                 newPopulation.GeneratePopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
                 population.SetChromosomes(newPopulation.GetChromosomes()); 
                 population.ComputeAdaptation();
+
+                currentPopulationMaxAdaptation = population.GetCurrentMaxAdaptation();
             }
 
             bestChromosomeOfAll = GeneticOperator.ReproductionByRoulette(population);

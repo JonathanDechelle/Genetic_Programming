@@ -7,10 +7,10 @@ namespace GeneticProgramming
 {
     public class Population
     {
-        private double m_AdaptationSum;
+        protected double m_AdaptationSum;
+        protected Chromosome[] m_Chromosomes;
         private double m_MaxAdaptation;
         private double m_MinAdaptation;
-        private Chromosome[] m_Chromosomes;
 
         public Population(int aPopulationCount)
         {
@@ -114,21 +114,16 @@ namespace GeneticProgramming
             return m_AdaptationSum;
         }
 
-        public void ComputeAdaptation()
+        private void SetAdaptationExtremum()
         {
-            m_AdaptationSum = 0;
-            int populationCount = GetCount();
-            for (int i = 0; i < populationCount; i++)
-            {
-                /* TO DO  CALCUL*/
-                //Fake calcul for now
-                double randomAdaptation = Ressources.m_Random.Next(500);
-                m_Chromosomes[i].m_Adaptation = randomAdaptation;
-                m_AdaptationSum += randomAdaptation;
-            }
-
             m_MinAdaptation = GetMinAdaptation();
-            m_MaxAdaptation = GetMaxAdaptation();
+            m_MaxAdaptation = GetCurrentMaxAdaptation();
+        }
+
+        public virtual void ComputeAdaptation()
+        {
+            /* redefined by parent */
+            SetAdaptationExtremum();
         }
 
         public double[] GetCurrentPopulationAdaptation()
@@ -157,7 +152,7 @@ namespace GeneticProgramming
             return min;
         }
 
-        public double GetMaxAdaptation()
+        public double GetCurrentMaxAdaptation()
         {
             double max = double.MinValue;
             for (int i = 0; i < GetCount(); i++)

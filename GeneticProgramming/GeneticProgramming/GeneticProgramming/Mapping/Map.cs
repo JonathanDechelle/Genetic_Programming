@@ -19,6 +19,7 @@ namespace GeneticProgramming
 
     public class Map
     {
+        private Vector2 m_IAStartIndex = new Vector2(4, 4);
         private int m_MaxFitness = 0;
         private int m_Width;
         private int m_Height;
@@ -99,6 +100,16 @@ namespace GeneticProgramming
             position.X = aIndex.X * m_TileWidth;
             position.Y = aIndex.Y * m_TileHeight;
             return position;
+        }
+
+        public Vector2 GetIAStartIndex()
+        {
+            return m_IAStartIndex;
+        }
+
+        public Vector2 GetIAStartPosition()
+        {
+            return GetIndexToPosition(m_IAStartIndex);
         }
 
         public bool HasElementAtIndex(Vector2 aPositionIndexed, Type aType)

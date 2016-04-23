@@ -42,7 +42,7 @@ namespace GeneticProgramming
             Ressources.Load(Content);
             m_Map = new Map("Map_1_Easy");
 
-            m_IA = new IA(m_Map.GetIndexToPosition(new Vector2(1,1)));
+            m_IA = new IA(m_Map.GetIAStartPosition());
             m_IA.m_MovementSpeed = IA_SPEED;
 
             Example.GenerateSimpleGPExample(m_Map);

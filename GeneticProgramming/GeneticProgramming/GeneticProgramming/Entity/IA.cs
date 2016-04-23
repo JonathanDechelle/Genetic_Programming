@@ -2,17 +2,17 @@
 
 namespace GeneticProgramming
 {
+    public enum EMovement
+    {
+        UP = 0,
+        DOWN = 1,
+        LEFT = 2,
+        RIGHT = 3,
+        NONE = 4
+    }
+        
     public class IA : BaseObject
     {
-        private enum EMovement
-        {
-            UP = 0,
-            DOWN = 1,
-            LEFT = 2,
-            RIGHT = 3,
-            NONE = 4
-        }
-
         public float m_MovementSpeed;
 
         private int m_MovementIndex = 0;
