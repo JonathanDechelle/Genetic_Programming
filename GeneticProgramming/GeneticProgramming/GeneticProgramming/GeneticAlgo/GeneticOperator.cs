@@ -37,11 +37,9 @@ namespace GeneticProgramming
                         échangé avec son homologue sur l’autre chromosome */
         public static void CrossOver1Point(Population aPopulation)
         {
-            Console.WriteLine("CrossOver1Point");
             int affectedChromosomes = (int)(aPopulation.GetCount() * m_CrossOverPercent);
             while (affectedChromosomes > PAIR_GAP - 1)
             {
-                Console.WriteLine("\r\nSelect 2 Chromosomes");
                 Chromosome chromosome1 = aPopulation.GetRandomChromosome();
                 Chromosome chromosome2 = null;
 
@@ -63,10 +61,6 @@ namespace GeneticProgramming
                     clonedChromosome1.SetGeneAt(i, c2Gene);
                     clonedChromosome2.SetGeneAt(i, c1Gene);
                 }
-
-                Console.WriteLine("\r\nAdded new Chromosomes");
-                Console.WriteLine(clonedChromosome1.ToString());
-                Console.WriteLine(clonedChromosome2.ToString());
 
                 affectedChromosomes -= PAIR_GAP;
             }
@@ -105,19 +99,14 @@ namespace GeneticProgramming
                 sumRank += i;
             }
 
-            Console.WriteLine("Best Chromosome in Reproduction By Rank");
             return ReproductionByAdaptation(
                 orderedChromosomeByRank,
                 rankScores, 
                 sumRank);
         }
 
-        public static Chromosome ReproductionByRoulette(Population aPopulation, bool aDebug = true)
+        public static Chromosome ReproductionByRoulette(Population aPopulation)
         {
-            if (aDebug)
-            {
-                Console.WriteLine("Best Chromosome in Reproduction By Roulette");
-            }
             return ReproductionByAdaptation(
                 aPopulation.GetChromosomes(), 
                 aPopulation.GetCurrentPopulationAdaptation(), 
@@ -142,11 +131,6 @@ namespace GeneticProgramming
                     break;
                 }
             }
-            
-            string debutText = currentChromosome == null ?
-                "No chromosome is good" : 
-                currentChromosome.ToString();
-            Console.WriteLine(debutText);
 
             return currentChromosome;
         }
@@ -182,7 +166,6 @@ namespace GeneticProgramming
                 chromosomesLooser.Add(looser);
             }
 
-            Console.Write("\r\nBest Chromosomes in Reproduction By Tournament\r\n");
             for (int i = 0; i < chromosomesWinner.Count; i++)
             {
                 double randomSelection = Ressources.m_Random.NextDouble();
@@ -192,7 +175,6 @@ namespace GeneticProgramming
                 }
                 else
                 {
-                    Console.WriteLine(chromosomesWinner[i].ToString());
                     aPopulation.RemoveChromosomes(chromosomesWinner.ToArray());
                 }
             }
