@@ -18,8 +18,8 @@ namespace GeneticProgramming
             int m_MaxTry = m_MaximumFitness + MAX_ADDITIONAL_TRY;
             double currentPopulationMaxAdaptation;
 
-            GeneticOperator.SetMutationProbability(0.03f);
-            GeneticOperator.SetCrossOverOnChromosomeProbability(0.10f);
+            GeneticOperator.SetMutationProbability(0.05f);
+            GeneticOperator.SetCrossOverOnChromosomeProbability(0.50f);
             GeneticOperator.SetSelectionForReproductionProbability(0.95f);
 
             PopulationContour population = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
@@ -27,14 +27,19 @@ namespace GeneticProgramming
             population.ComputeAdaptation();
             currentPopulationMaxAdaptation = population.GetCurrentMaxAdaptation();
 
-            while (currentPopulationMaxAdaptation < 12)
+            while (currentPopulationMaxAdaptation < m_MaximumFitness)
             {
                 population.ToString();
 
                 //Reproduction
                 PopulationContour newPopulation = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
 
-                bool hasChromosomesInPopulation = true;
+                #region elitisme
+                Chromosome[] chromosomes = GeneticOperator.GetElites(population);
+                #endregion
+
+                #region Tournament
+                /*bool hasChromosomesInPopulation = true;
                 while (hasChromosomesInPopulation)
                 {
                     Chromosome[] chromosomesWinner = GeneticOperator.ReproductionByTournamenent(population, NUMBERS_PAIR_FOR_REPRODUCTION);
@@ -54,13 +59,14 @@ namespace GeneticProgramming
                         newPopulation.AddChromosomes(chromosomesWinner);
                     }
                 }
-
+                */
+                #endregion
                 //Variation Possibility
-                GeneticOperator.CrossOver1Point(newPopulation);
-                GeneticOperator.Mutate(newPopulation);
+                GeneticOperator.CrossOver1Point(population);
+                GeneticOperator.Mutate(population);
 
-                newPopulation.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
-                population.SetChromosomes(newPopulation.GetChromosomes()); 
+                //newPopulation.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
+                //population.SetChromosomes(newPopulation.GetChromosomes()); 
                 population.ComputeAdaptation();
 
                 currentPopulationMaxAdaptation = population.GetCurrentMaxAdaptation();

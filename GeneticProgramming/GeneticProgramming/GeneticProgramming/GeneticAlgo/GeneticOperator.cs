@@ -58,6 +58,12 @@ namespace GeneticProgramming
             }
         }
 
+        public static Chromosome[] GetElites(Population aPopulation)
+        {
+            Chromosome[] chromosomes = aPopulation.GetChromosomesOrderedByHighestPerformance();
+            return chromosomes;
+        }
+
         //mutation : Possibilité de chance q’un bit mute (passer de 1 à 0 ou de 0 à 1)
         public static void Mutate(Population aPopulation)
         {
@@ -171,7 +177,7 @@ namespace GeneticProgramming
                 {
                     aPopulation.RemoveChromosomes(chromosomesWinner.ToArray());
                     aPopulation.RemoveChromosomes(chromosomesLooser.ToArray());
-                }
+            }
             }
 
             return chromosomesWinner.ToArray();

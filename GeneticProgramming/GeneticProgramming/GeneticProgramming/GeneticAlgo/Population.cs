@@ -32,7 +32,8 @@ namespace GeneticProgramming
 
         public Chromosome GetRandomChromosome()
         {
-            int aIndex = Ressources.m_Random.Next(GetCount());
+            int nbChromosomes = GetCount();
+            int aIndex = Ressources.m_Random.Next(nbChromosomes);
             return GetChromosomeAt(aIndex);
         }
 
@@ -67,10 +68,9 @@ namespace GeneticProgramming
         public void RemoveChromosomes(Chromosome[] aChromosomesToRemove)
         {
             int arrayIndex = 0;
-            int arrayCount = m_Chromosomes.Length;
             for (int i = 0; i < aChromosomesToRemove.Length; i++)
             {
-                for (int j = 0; j < arrayCount; j++)
+                for (int j = 0; j < m_Chromosomes.Length; j++)
                 {
                     if (m_Chromosomes[j] == aChromosomesToRemove[i])
                     {
@@ -79,15 +79,19 @@ namespace GeneticProgramming
                 }
             }
 
-            //ReplaceElement
+            ReplaceElements(m_Chromosomes);
+        }
+
+        private void ReplaceElements(Chromosome[] aChromosomes)
+        {
             int indexToMove = 0;
-            for (int i = 0; i < arrayCount; i++)
+            for (int i = 0; i < aChromosomes.Length; i++)
             {
-                if (m_Chromosomes[i] != null)
+                if (aChromosomes[i] != null)
                 {
-                    Chromosome oldChromosome = GetChromosomeAt(i);
-                    m_Chromosomes[i] = null;
-                    m_Chromosomes[i - indexToMove] = oldChromosome;
+                    Chromosome oldChromosome = aChromosomes[i];
+                    aChromosomes[i] = null;
+                    aChromosomes[i - indexToMove] = oldChromosome;
                     continue;
                 }
 
@@ -186,7 +190,6 @@ namespace GeneticProgramming
 
         public Chromosome[] GetChromosomesOrderedByHighestPerformance()
         {
-            GetChromosomesOrderedByLowestPerformance();
             int populationCount = GetCount();
             Chromosome[] chromosomes = new Chromosome[populationCount];
             int higherThan;
