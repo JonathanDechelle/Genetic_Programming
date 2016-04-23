@@ -9,7 +9,6 @@ namespace GeneticProgramming
     {
         private static float m_MutationPercent;
         private static float m_CrossOverPercent;
-        private static float m_ReproductionOnChromosomePercent;
         private static float m_SelectionForReproductionPercent;
         private const int PAIR_GAP = 2;
 
@@ -21,11 +20,6 @@ namespace GeneticProgramming
         public static void SetCrossOverOnChromosomeProbability(float aPercent)
         {
             m_CrossOverPercent = aPercent;
-        }
-
-        public static void SetReproductionOnChromosomeProbability(float aPercent)
-        {
-            m_ReproductionOnChromosomePercent = aPercent;
         }
 
         public static void SetSelectionForReproductionProbability(float aPercent)

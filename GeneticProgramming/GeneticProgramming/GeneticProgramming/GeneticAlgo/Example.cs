@@ -18,9 +18,8 @@ namespace GeneticProgramming
             int m_MaxTry = m_MaximumFitness + MAX_ADDITIONAL_TRY;
             double currentPopulationMaxAdaptation;
 
-            GeneticOperator.SetMutationProbability(0.05f);
-            GeneticOperator.SetCrossOverOnChromosomeProbability(0.5f);
-            GeneticOperator.SetReproductionOnChromosomeProbability(0.65f);
+            GeneticOperator.SetMutationProbability(0.00f);
+            GeneticOperator.SetCrossOverOnChromosomeProbability(0.0f);
             GeneticOperator.SetSelectionForReproductionProbability(0.95f);
 
             PopulationContour population = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
