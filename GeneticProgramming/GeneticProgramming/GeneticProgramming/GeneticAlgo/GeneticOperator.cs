@@ -60,7 +60,7 @@ namespace GeneticProgramming
 
         public static Chromosome[] GetElites(Population aPopulation)
         {
-            Chromosome[] chromosomes = aPopulation.GetChromosomesOrderedByHighestPerformance();
+            Chromosome[] chromosomes = aPopulation.GetChromosomesOrderedByLowestPerformance();
             return chromosomes;
         }
 
@@ -89,7 +89,7 @@ namespace GeneticProgramming
         public static Chromosome ReproductionByRank(Population aPopulation)
         {
             int populationCount = aPopulation.GetCount();
-            Chromosome[] orderedChromosomeByRank = aPopulation.GetChromosomesOrderedByHighestPerformance();
+            Chromosome[] orderedChromosomeByRank = aPopulation.GetChromosomesOrderedByLowestPerformance();
             double[] rankScores = new double[populationCount];
             double sumRank = 0;
             for (int i = 0; i < populationCount; i++)

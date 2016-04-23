@@ -188,7 +188,7 @@ namespace GeneticProgramming
             return m_Chromosomes[maxIndex];
         }
 
-        public Chromosome[] GetChromosomesOrderedByHighestPerformance()
+        public Chromosome[] GetChromosomesOrderedByLowestPerformance()
         {
             int populationCount = GetCount();
             Chromosome[] chromosomes = new Chromosome[populationCount];
@@ -216,7 +216,7 @@ namespace GeneticProgramming
             return chromosomes;
         }
 
-        public Chromosome[] GetChromosomesOrderedByLowestPerformance()
+        public Chromosome[] GetChromosomesOrderedByHighestPerformance()
         {
             int populationCount = GetCount();
             Chromosome[] chromosomes = new Chromosome[populationCount];
