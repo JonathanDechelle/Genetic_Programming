@@ -12,6 +12,11 @@ namespace GeneticProgramming
         private int[] m_ChromosomeBit;
         private int m_MaximumParameterIndice;
 
+        #region DebugStuff
+        private string m_Bytes = "";
+        private const string CHROMOSOME_STRING_FORMAT = "Bytes = {0} Adaptation = {1}";
+        #endregion
+
         public Chromosome(int aBitCount, int aNbParameter)
         {
             m_ChromosomeBit = new int[aBitCount];
@@ -21,6 +26,7 @@ namespace GeneticProgramming
             }
 
             m_MaximumParameterIndice = aNbParameter - 1;
+            RebuildDebugText();
         }
 
         private Chromosome(Chromosome aChromosome)
@@ -32,6 +38,17 @@ namespace GeneticProgramming
             for (int i = 0; i < length; i++)
             {
                 m_ChromosomeBit[i] = aChromosome.m_ChromosomeBit[i];
+            }
+
+            RebuildDebugText();
+        }
+
+        private void RebuildDebugText()
+        {
+            m_Bytes = "";
+            for (int i = 0; i < m_ChromosomeBit.Length; i++)
+            {
+                m_Bytes += m_ChromosomeBit[i];
             }
         }
 
@@ -58,6 +75,12 @@ namespace GeneticProgramming
         public void SetGeneAt(int aIndex, int aGene)
         {
             m_ChromosomeBit[aIndex] = aGene;
+            RebuildDebugText();
+        }
+
+        public override string ToString()
+        {
+            return string.Format(CHROMOSOME_STRING_FORMAT, m_Bytes, m_Adaptation);
         }
 
         public Chromosome Clone()
