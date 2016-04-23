@@ -10,7 +10,7 @@ namespace GeneticProgramming
     public class BaseObject
     {
         public Vector2 m_Position;
-        protected Color m_Color;
+        public Color m_Color;
         protected Texture2D m_Texture;
         protected Texture2D m_OutLine;
 

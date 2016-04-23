@@ -114,9 +114,14 @@ namespace GeneticProgramming
 
         public bool HasElementAtIndex(Vector2 aPositionIndexed, Type aType)
         {
-            BaseObject baseObject = m_Grid[(int)aPositionIndexed.Y, (int)aPositionIndexed.X].m_Object;
+            BaseObject baseObject = GetElementAtIndex(aPositionIndexed);
 
             return baseObject != null && baseObject.GetType() == aType;
+        }
+
+        public BaseObject GetElementAtIndex(Vector2 aPositionIndexed)
+        {
+            return m_Grid[(int)aPositionIndexed.Y, (int)aPositionIndexed.X].m_Object;
         }
 
         //Draw each object in the grid

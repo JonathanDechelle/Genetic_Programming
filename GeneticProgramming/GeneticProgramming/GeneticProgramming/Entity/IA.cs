@@ -67,6 +67,8 @@ namespace GeneticProgramming
                     {
                         m_KnowPositions.Add(newPositionIndexed);
                         m_Adaptation++;
+
+                        aMap.GetElementAtIndex(newPositionIndexed).m_Color = Color.Red;
                     }
                 }
 
