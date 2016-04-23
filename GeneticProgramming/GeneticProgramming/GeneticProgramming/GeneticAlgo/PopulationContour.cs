@@ -19,9 +19,6 @@ namespace GeneticProgramming
             m_AdaptationSum = 0;
             for (int i = 0; i < GetCount(); i++)
             {
-                /* TO DO  CALCUL*/
-                //Fake calcul for now
-                //double randomAdaptation = Ressources.m_Random.Next(500);
                 ComputeChromosomeAdaptation(m_Chromosomes[i]);
                 m_AdaptationSum += m_Chromosomes[i].m_Adaptation;
             }
