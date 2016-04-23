@@ -10,7 +10,7 @@ namespace GeneticProgramming
         public static Chromosome bestChromosomeOfAll;
         public static void GenerateSimpleGPExample(Map aMap)
         {
-            const int CHROMOSOMES_PER_GENERATION = 10;
+            const int CHROMOSOMES_PER_GENERATION = 500;
             const int PARAMATERS_PER_CHROMOSOMES = 4;
             const int NUMBERS_PAIR_FOR_REPRODUCTION = 1;
             const int MAX_ADDITIONAL_TRY = 8;
@@ -25,9 +25,9 @@ namespace GeneticProgramming
             PopulationContour population = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
             population.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
             population.ComputeAdaptation();
-            currentPopulationMaxAdaptation = population.GetCurrentMaxAdaptation();
+            currentPopulationMaxAdaptation = population.GetMaxAdaptation();
 
-            while (currentPopulationMaxAdaptation < m_MaximumFitness)
+            for (int i = 0; i < 10; i++) //nb MAx generation
             {
                 population.ToString();
 
@@ -36,6 +36,7 @@ namespace GeneticProgramming
 
                 #region elitisme
                 Chromosome[] chromosomes = GeneticOperator.GetElites(population);
+                newPopulation.AddChromosomes(chromosomes);
                 #endregion
 
                 #region Tournament
@@ -61,15 +62,15 @@ namespace GeneticProgramming
                 }
                 */
                 #endregion
-                //Variation Possibility
-                GeneticOperator.CrossOver1Point(population);
-                GeneticOperator.Mutate(population);
 
-                //newPopulation.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
-                //population.SetChromosomes(newPopulation.GetChromosomes()); 
+                //GeneticOperator.CrossOver1Point(population);
+                //GeneticOperator.Mutate(newPopulation);
+
+                newPopulation.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
+                population.SetChromosomes(newPopulation.GetChromosomes()); 
                 population.ComputeAdaptation();
 
-                currentPopulationMaxAdaptation = population.GetCurrentMaxAdaptation();
+                currentPopulationMaxAdaptation = population.GetMaxAdaptation();
             }
 
             bestChromosomeOfAll = population.GetBestChromosome();

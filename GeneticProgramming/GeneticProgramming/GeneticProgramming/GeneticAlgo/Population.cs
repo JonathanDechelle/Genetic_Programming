@@ -30,13 +30,6 @@ namespace GeneticProgramming
             return m_Chromosomes[aIndex];
         }
 
-        public Chromosome GetRandomChromosome()
-        {
-            int nbChromosomes = GetCount();
-            int aIndex = Ressources.m_Random.Next(nbChromosomes);
-            return GetChromosomeAt(aIndex);
-        }
-
         public Chromosome[] GetChromosomes()
         {
             return m_Chromosomes;
@@ -121,7 +114,7 @@ namespace GeneticProgramming
         private void SetAdaptationExtremum()
         {
             m_MinAdaptation = GetMinAdaptation();
-            m_MaxAdaptation = GetCurrentMaxAdaptation();
+            m_MaxAdaptation = GetMaxAdaptation();
         }
 
         public virtual void ComputeAdaptation()
@@ -156,7 +149,7 @@ namespace GeneticProgramming
             return min;
         }
 
-        public double GetCurrentMaxAdaptation()
+        public double GetMaxAdaptation()
         {
             double max = double.MinValue;
             int count = GetCount();
@@ -263,7 +256,7 @@ namespace GeneticProgramming
               //  Console.WriteLine(m_Chromosomes[i].ToString());
             //}
 
-            Console.WriteLine("fitness max = " + GetCurrentMaxAdaptation());
+            Console.WriteLine("fitness max = " + GetMaxAdaptation());
             return "";
         }
     }

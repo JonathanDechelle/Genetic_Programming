@@ -27,6 +27,19 @@ namespace GeneticProgramming
             m_SelectionForReproductionPercent = aPercent;
         }
 
+        public static Chromosome GetRandomChromosome(Population aPopulation)
+        {
+            int nbChromosomes = aPopulation.GetCount();
+            int aIndex = Ressources.m_Random.Next(nbChromosomes);
+            return aPopulation.GetChromosomeAt(aIndex);
+        }
+
+        public static Chromosome GetRandomChromosome(Chromosome[] aChromosomes)
+        {
+            int aIndex = Ressources.m_Random.Next(aChromosomes.Length);
+            return aChromosomes[aIndex];
+        }
+
         /*enjambement : Possibilité de chance qu’un bit soit
                         échangé avec son homologue sur l’autre chromosome */
         public static void CrossOver1Point(Population aPopulation)
@@ -34,34 +47,68 @@ namespace GeneticProgramming
             int affectedChromosomes = (int)(aPopulation.GetCount() * m_CrossOverPercent);
             while (affectedChromosomes > PAIR_GAP - 1)
             {
-                Chromosome chromosome1 = aPopulation.GetRandomChromosome();
+                Chromosome chromosome1 = GetRandomChromosome(aPopulation);
                 Chromosome chromosome2 = null;
 
                 while (chromosome2 == null || chromosome2 == chromosome1)
                 {
-                    chromosome2 = aPopulation.GetRandomChromosome();
+                    chromosome2 = GetRandomChromosome(aPopulation);
                 }
-                
-                //get cross Point
-                int maxPoint = chromosome1.GetLenght();
-                int crossPoint = Ressources.m_Random.Next(0, maxPoint);
 
-                for (int i = crossPoint; i < maxPoint; i++)
-                {
-                    int c1Gene = chromosome1.GetGeneAt(i);
-                    int c2Gene = chromosome2.GetGeneAt(i);
-                    chromosome1.SetGeneAt(i, c2Gene);
-                    chromosome2.SetGeneAt(i, c1Gene);
-                }
+                ExchangeGene(chromosome1, chromosome2);
 
                 affectedChromosomes -= PAIR_GAP;
             }
         }
 
+        private static void ExchangeGene(Chromosome aChromosome1, Chromosome aChromosome2)
+        {
+            //get cross Point
+            int maxPoint = aChromosome1.GetLenght();
+            int crossPoint = Ressources.m_Random.Next(0, maxPoint);
+
+            for (int i = crossPoint; i < maxPoint; i++)
+            {
+                int c1Gene = aChromosome1.GetGeneAt(i);
+                int c2Gene = aChromosome2.GetGeneAt(i);
+                aChromosome1.SetGeneAt(i, c2Gene);
+                aChromosome2.SetGeneAt(i, c1Gene);
+            }
+        }
+
         public static Chromosome[] GetElites(Population aPopulation)
         {
-            Chromosome[] chromosomes = aPopulation.GetChromosomesOrderedByLowestPerformance();
-            return chromosomes;
+            Chromosome[] chromosomes = aPopulation.GetChromosomesOrderedByHighestPerformance();
+            int affectedChromosomes = (int)(aPopulation.GetCount() * m_CrossOverPercent);
+
+            Chromosome[] chromosomesElites = new Chromosome[affectedChromosomes];
+            for (int i = 0; i < affectedChromosomes; i++)
+            {
+                chromosomesElites[i] = chromosomes[i];
+            }
+
+            CrossOver1PointForElites(chromosomesElites);
+            return chromosomesElites;
+        }
+
+        private static void CrossOver1PointForElites(Chromosome[] aChromosomesElite) // A OPTIMISER
+        {
+            int eliteStartIndex = aChromosomesElite.Length - 1;
+            int eliteIndex;
+            int maximumLoop = PAIR_GAP - 1;
+
+            for (eliteIndex = eliteStartIndex; eliteIndex > maximumLoop; eliteIndex -= PAIR_GAP)
+            {
+                Chromosome chromosome1 = GetRandomChromosome(aChromosomesElite);
+                Chromosome chromosome2 = null;
+
+                while (chromosome2 == null || chromosome2 == chromosome1)
+                {
+                    chromosome2 = GetRandomChromosome(aChromosomesElite);
+                }
+
+                ExchangeGene(chromosome1, chromosome2);
+            }
         }
 
         //mutation : Possibilité de chance q’un bit mute (passer de 1 à 0 ou de 0 à 1)
@@ -79,8 +126,9 @@ namespace GeneticProgramming
                     }
 
                     int gene = chromosome.GetGeneAt(j);
-                    int maxParameterIndice = chromosome.GetMaximumParameterIndice();
-                    gene = (gene + maxParameterIndice) % maxParameterIndice;
+                    int maxParameterIndice = chromosome.GetNumberOfParameter();
+                    int randomParameter = Ressources.m_Random.Next(maxParameterIndice);
+                    gene = (gene + randomParameter) % maxParameterIndice;
                     chromosome.SetGeneAt(j, gene);
                 }
             }
@@ -149,12 +197,12 @@ namespace GeneticProgramming
             Chromosome chromosome2;
             for (int i = 0; i < minChromomes; i += PAIR_GAP)
             {
-                chromosome1 = aPopulation.GetRandomChromosome();
+                chromosome1 = GetRandomChromosome(aPopulation);
                 chromosome2 = null;
 
                 while (chromosome2 == null || chromosome2 == chromosome1)
                 {
-                    chromosome2 = aPopulation.GetRandomChromosome();
+                    chromosome2 = GetRandomChromosome(aPopulation);
                 }
 
                 bool chromosome1Win = chromosome1.m_Adaptation > chromosome2.m_Adaptation;
