@@ -23,7 +23,7 @@ namespace GeneticProgramming
             GeneticOperator.SetSelectionForReproductionProbability(0.95f);
 
             PopulationContour population = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
-            population.GeneratePopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
+            population.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
             population.ComputeAdaptation();
             currentPopulationMaxAdaptation = population.GetCurrentMaxAdaptation();
 
@@ -54,7 +54,7 @@ namespace GeneticProgramming
                 GeneticOperator.CrossOver1Point(newPopulation);
                 GeneticOperator.Mutate(newPopulation);
 
-                newPopulation.GeneratePopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
+                newPopulation.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
                 population.SetChromosomes(newPopulation.GetChromosomes()); 
                 population.ComputeAdaptation();
 

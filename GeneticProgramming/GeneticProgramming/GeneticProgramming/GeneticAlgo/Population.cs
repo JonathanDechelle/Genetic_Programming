@@ -17,7 +17,7 @@ namespace GeneticProgramming
             m_Chromosomes = new Chromosome[aPopulationCount];
         }
 
-        public void GeneratePopulation(int aChromosomeBitCount, int aNbParamaters)
+        public void GenerateAdditionalPopulation(int aChromosomeBitCount, int aNbParamaters)
         {
             for (int i = GetCount(); i < m_Chromosomes.Length; i++)
             {
