@@ -10,11 +10,7 @@ namespace GeneticProgramming
     {
         public double m_Adaptation;
         private int[] m_ChromosomeBit;
-
-        public int GetLenght()
-        {
-            return m_ChromosomeBit.Length;
-        }
+        private int m_MaximumParameterIndice;
 
         #region DebugStuff
         private string m_Bytes = "";
@@ -37,6 +33,7 @@ namespace GeneticProgramming
                 m_ChromosomeBit[i] = randomByte;
             }
 
+            m_MaximumParameterIndice = aNbParameter - 1;
             RebuildDebugText();
         }
 
@@ -71,6 +68,16 @@ namespace GeneticProgramming
         public int[] GetGenes()
         {
             return m_ChromosomeBit;
+        }
+
+        public int GetLenght()
+        {
+            return m_ChromosomeBit.Length;
+        }
+
+        public int GetMaximumParameterIndice()
+        {
+            return m_MaximumParameterIndice;
         }
 
         public void SetGeneAt(int aIndex, int aGene)

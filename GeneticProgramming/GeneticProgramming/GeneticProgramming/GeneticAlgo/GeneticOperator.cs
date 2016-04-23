@@ -75,7 +75,8 @@ namespace GeneticProgramming
                     }
 
                     int gene = chromosome.GetGeneAt(j);
-                    gene = Math.Abs(gene - 1);
+                    int maxParameterIndice = chromosome.GetMaximumParameterIndice();
+                    gene = (gene + maxParameterIndice) % maxParameterIndice;
                     chromosome.SetGeneAt(j, gene);
                 }
             }
