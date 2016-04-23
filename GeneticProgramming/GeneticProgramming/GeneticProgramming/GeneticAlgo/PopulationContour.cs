@@ -32,15 +32,16 @@ namespace GeneticProgramming
             Vector2 nextMove = Vector2.Zero;
             int adaptation = 0;
 
+            List<Vector2> knowPositions = new List<Vector2>();
             int[] movements = aChromosome.GetGenes();
             for (int i = 0; i < movements.Length; i++)
             {
                 switch ((EMovement)movements[i])
                 {
-                    case EMovement.UP: nextMove = -Vector2.UnitY; break;
-                    case EMovement.DOWN: nextMove = Vector2.UnitY; break;
-                    case EMovement.LEFT: nextMove = -Vector2.UnitX; break;
-                    case EMovement.RIGHT: nextMove = Vector2.UnitX; break;
+                    case EMovement.UP:    nextMove = -Vector2.UnitY; break;
+                    case EMovement.DOWN:  nextMove =  Vector2.UnitY; break;
+                    case EMovement.LEFT:  nextMove = -Vector2.UnitX; break;
+                    case EMovement.RIGHT: nextMove =  Vector2.UnitX; break;
                 }
 
                 Vector2 newPositionIndexed = currentPositionIndexed + nextMove;
@@ -51,7 +52,11 @@ namespace GeneticProgramming
 
                 if (m_Map.HasElementAtIndex(newPositionIndexed, typeof(Parkour)))
                 {
-                    adaptation++;
+                    if (!knowPositions.Contains(newPositionIndexed))
+                    {
+                        knowPositions.Add(newPositionIndexed);
+                        adaptation++;
+                    }
                 }
 
                 currentPositionIndexed = newPositionIndexed;

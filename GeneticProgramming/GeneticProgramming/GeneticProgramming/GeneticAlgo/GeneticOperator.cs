@@ -45,15 +45,13 @@ namespace GeneticProgramming
                 //get cross Point
                 int maxPoint = chromosome1.GetLenght();
                 int crossPoint = Ressources.m_Random.Next(0, maxPoint);
-                Chromosome clonedChromosome1 = chromosome1.Clone();
-                Chromosome clonedChromosome2 = chromosome2.Clone();
 
                 for (int i = crossPoint; i < maxPoint; i++)
                 {
-                    int c1Gene = clonedChromosome1.GetGeneAt(i);
-                    int c2Gene = clonedChromosome2.GetGeneAt(i);
-                    clonedChromosome1.SetGeneAt(i, c2Gene);
-                    clonedChromosome2.SetGeneAt(i, c1Gene);
+                    int c1Gene = chromosome1.GetGeneAt(i);
+                    int c2Gene = chromosome2.GetGeneAt(i);
+                    chromosome1.SetGeneAt(i, c2Gene);
+                    chromosome2.SetGeneAt(i, c1Gene);
                 }
 
                 affectedChromosomes -= PAIR_GAP;
@@ -141,22 +139,22 @@ namespace GeneticProgramming
             List<Chromosome> chromosomesWinner = new List<Chromosome>();
             List<Chromosome> chromosomesLooser = new List<Chromosome>();
 
+            Chromosome chromosome1;
+            Chromosome chromosome2;
             for (int i = 0; i < minChromomes; i += PAIR_GAP)
             {
-                Chromosome currentChromosome = aPopulation.GetChromosomeAt(i);
-                Chromosome nextChromosome = aPopulation.GetChromosomeAt(i + 1);
+                chromosome1 = aPopulation.GetRandomChromosome();
+                chromosome2 = null;
 
-                bool currentWin = currentChromosome.m_Adaptation > nextChromosome.m_Adaptation; 
-                Chromosome winner =
-                    currentWin ?
-                currentChromosome :
-                nextChromosome;
+                while (chromosome2 == null || chromosome2 == chromosome1)
+                {
+                    chromosome2 = aPopulation.GetRandomChromosome();
+                }
 
-                Chromosome looser =
-                    currentWin ?
-                nextChromosome :
-                currentChromosome;
+                bool chromosome1Win = chromosome1.m_Adaptation > chromosome2.m_Adaptation;
                 
+                Chromosome winner = chromosome1Win ?  chromosome1 : chromosome2;
+                Chromosome looser = chromosome1Win ?  chromosome2 : chromosome1;                
                 chromosomesWinner.Add(winner);
                 chromosomesLooser.Add(looser);
             }
@@ -167,14 +165,14 @@ namespace GeneticProgramming
                 if (randomSelection > m_SelectionForReproductionPercent)
                 {
                     chromosomesWinner.RemoveAt(i);
+                    chromosomesLooser.RemoveAt(i);
                 }
                 else
                 {
                     aPopulation.RemoveChromosomes(chromosomesWinner.ToArray());
+                    aPopulation.RemoveChromosomes(chromosomesLooser.ToArray());
                 }
             }
-
-            aPopulation.RemoveChromosomes(chromosomesLooser.ToArray());
 
             return chromosomesWinner.ToArray();
         }

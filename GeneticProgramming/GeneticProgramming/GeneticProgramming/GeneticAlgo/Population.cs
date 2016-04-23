@@ -155,7 +155,8 @@ namespace GeneticProgramming
         public double GetCurrentMaxAdaptation()
         {
             double max = double.MinValue;
-            for (int i = 0; i < GetCount(); i++)
+            int count = GetCount();
+            for (int i = 0; i < count; i++)
             {
                 if (m_Chromosomes[i].m_Adaptation > max)
                 {
@@ -164,6 +165,23 @@ namespace GeneticProgramming
             }
 
             return max;
+        }
+
+        public Chromosome GetBestChromosome()
+        {
+            double max = double.MinValue;
+            int maxIndex = 0;
+            int count = GetCount();
+            for (int i = 0; i < count; i++)
+            {
+                if (m_Chromosomes[i].m_Adaptation > max)
+                {
+                    max = m_Chromosomes[i].m_Adaptation;
+                    maxIndex = i;
+                }
+            }
+
+            return m_Chromosomes[maxIndex];
         }
 
         public Chromosome[] GetChromosomesOrderedByHighestPerformance()

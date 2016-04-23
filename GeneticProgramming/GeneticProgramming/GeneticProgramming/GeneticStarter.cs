@@ -21,7 +21,7 @@ namespace GeneticProgramming
         Map m_Map;
         IA m_IA;
 
-        private const float IA_SPEED = 10f; 
+        private const float IA_SPEED = 5f; 
 
         public GeneticStarter()
         {

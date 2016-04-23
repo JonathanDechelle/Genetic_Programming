@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace GeneticProgramming
 {
@@ -16,7 +17,10 @@ namespace GeneticProgramming
         public float m_MovementSpeed;
 
         private int m_MovementIndex = 0;
-        public int[] m_Movements;
+        public int[] m_Movements; 
+
+        private List<Vector2> m_KnowPositions = new List<Vector2>();
+        private int m_Adaptation = 0;
 
         private float m_Timer = 0;
         private float m_BaseDistance;
@@ -27,13 +31,14 @@ namespace GeneticProgramming
         {
             m_Color = Microsoft.Xna.Framework.Color.Green;
             m_BaseDistance = m_Texture.Bounds.Width;
-            m_Timer = FAKE_FRAME_RATE * 2; // just for testing
+            m_Timer = FAKE_FRAME_RATE * 5; // just for testing
         }
 
         public void Update(Map aMap)
         {
             if(m_MovementIndex > m_Movements.Length - 1)
             {
+                int adaptation = m_Adaptation;
                 return;
             }
 
@@ -54,6 +59,15 @@ namespace GeneticProgramming
                 if (!aMap.HasElementAtIndex(newPositionIndexed, typeof(Wall)))
                 {
                     m_Position = newPositionIndexed * m_BaseDistance;
+                }
+
+                if (aMap.HasElementAtIndex(newPositionIndexed, typeof(Parkour)))
+                {
+                    if (!m_KnowPositions.Contains(newPositionIndexed))
+                    {
+                        m_KnowPositions.Add(newPositionIndexed);
+                        m_Adaptation++;
+                    }
                 }
 
                 m_Timer = FAKE_FRAME_RATE;
