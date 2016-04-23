@@ -192,6 +192,39 @@ namespace GeneticProgramming
         {
             int populationCount = GetCount();
             Chromosome[] chromosomes = new Chromosome[populationCount];
+            int lowerThan;
+
+            for (int i = 0; i < populationCount; i++)
+            {
+                lowerThan = populationCount - 1;
+                for (int j = 0; j < populationCount; j++)
+                {
+                    if (i == j)
+                    {
+                        continue; //excluded himself
+                    }
+
+                    if (m_Chromosomes[j].m_Adaptation > m_Chromosomes[i].m_Adaptation)
+                    {
+                        lowerThan--;
+                    }
+                }
+
+                while (chromosomes[lowerThan] != null)
+                {
+                    lowerThan--;
+                }
+
+                chromosomes[lowerThan] = m_Chromosomes[i];
+            }
+
+            return chromosomes;
+        }
+
+        public Chromosome[] GetChromosomesOrderedByHighestPerformance()
+        {
+            int populationCount = GetCount();
+            Chromosome[] chromosomes = new Chromosome[populationCount];
             int higherThan;
 
             for (int i = 0; i < populationCount; i++)
@@ -204,41 +237,18 @@ namespace GeneticProgramming
                         continue; //excluded himself
                     }
 
-                    if (m_Chromosomes[i].m_Adaptation > m_Chromosomes[j].m_Adaptation)
+                    if (m_Chromosomes[j].m_Adaptation > m_Chromosomes[i].m_Adaptation)
                     {
                         higherThan++;
                     }
                 }
 
-                chromosomes[higherThan] = m_Chromosomes[i];
-            }
-
-            return chromosomes;
-        }
-
-        public Chromosome[] GetChromosomesOrderedByHighestPerformance()
-        {
-            int populationCount = GetCount();
-            Chromosome[] chromosomes = new Chromosome[populationCount];
-            int lowerThan;
-
-            for (int i = 0; i < populationCount; i++)
-            {
-                lowerThan = 0;
-                for (int j = 0; j < populationCount; j++)
+                while (chromosomes[higherThan] != null)
                 {
-                    if (i == j)
-                    {
-                        continue; //excluded himself
-                    }
-
-                    if (m_Chromosomes[i].m_Adaptation < m_Chromosomes[j].m_Adaptation)
-                    {
-                        lowerThan++;
-                    }
+                    higherThan++;
                 }
 
-                chromosomes[lowerThan] = m_Chromosomes[i];
+                chromosomes[higherThan] = m_Chromosomes[i];
             }
 
             return chromosomes;
