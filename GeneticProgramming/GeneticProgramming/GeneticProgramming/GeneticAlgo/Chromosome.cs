@@ -14,18 +14,10 @@ namespace GeneticProgramming
 
         public Chromosome(int aBitCount, int aNbParameter)
         {
-            /* TODO add argument for nb parameter 
-             0 = back
-             1 = front
-             2 = left
-             3 = right 
-             */
             m_ChromosomeBit = new int[aBitCount];
-            byte randomByte;
             for (int i = 0; i < aBitCount; i++)
             {
-                randomByte = Convert.ToByte(Ressources.m_Random.Next(aNbParameter));
-                m_ChromosomeBit[i] = randomByte;
+                m_ChromosomeBit[i] = Convert.ToByte(Ressources.m_Random.Next(aNbParameter));
             }
 
             m_MaximumParameterIndice = aNbParameter - 1;
