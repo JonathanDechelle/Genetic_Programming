@@ -13,11 +13,11 @@ namespace GeneticProgramming
 
         public static void GenerateSimpleGPExample(Map aMap)
         {
-            const int CHROMOSOMES_PER_GENERATION = 500;
+            const int CHROMOSOMES_PER_GENERATION = 50;
             const int PARAMATERS_PER_CHROMOSOMES = 4;
             const int NUMBERS_PAIR_FOR_REPRODUCTION = 1;
-            const int MAX_ADDITIONAL_TRY = 8;
-            const int BEST_CHROMOSOME_BY_X_GENERATION = 30;
+            const int MAX_ADDITIONAL_TRY = 5;
+            const double BEST_CHROMOSOME_BY_X_GENERATION = 30;
             int m_MaximumFitness = aMap.GetMaximumFitness();
             int m_MaxTry = m_MaximumFitness + MAX_ADDITIONAL_TRY;
             double currentPopulationMaxAdaptation;
@@ -84,15 +84,10 @@ namespace GeneticProgramming
                 nbGenerations++;
                 if (nbGenerations % BEST_CHROMOSOME_BY_X_GENERATION == 0)
                 {
-                    int count = m_BestChromosomesInGenerations.Count;
-                    if (count == 0)
+                    double bestAdaptation = GetBestAdaptation();
+                    if(bestAdaptation < m_BestChromosome.m_Adaptation)
                     {
-                        m_BestChromosomesInGenerations.Add(m_BestChromosome);
-                        continue;
-                    }
-                    else if (m_BestChromosome.m_Adaptation > m_BestChromosomesInGenerations[count - 1].m_Adaptation)
-                    {
-                        m_BestChromosomesInGenerations.Add(m_BestChromosome);
+                        m_BestChromosomesInGenerations.Add(m_BestChromosome.Clone());
                     }
                 }
             }
@@ -103,6 +98,22 @@ namespace GeneticProgramming
             }
 
             Console.WriteLine("Nb Generation = " + nbGenerations); 
+        }
+
+        private static double GetBestAdaptation()
+        {
+            double max = double.MinValue;
+            int count = m_BestChromosomesInGenerations.Count;
+            for (int i = 0; i < count; i++)
+            {
+                double adaptation = m_BestChromosomesInGenerations[i].m_Adaptation;
+                if (adaptation > max)
+                {
+                    max = adaptation;
+                }
+            }
+
+            return max;
         }
 
         /*
