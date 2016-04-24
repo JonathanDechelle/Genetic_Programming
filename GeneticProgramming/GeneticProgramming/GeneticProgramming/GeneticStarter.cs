@@ -93,6 +93,7 @@ namespace GeneticProgramming
 
             m_Map.Draw(m_SpriteBatch);
             m_IA.Draw(m_SpriteBatch);
+            m_SpriteBatch.DrawString(Ressources.m_Font, "CHROMOSOME #" + m_CurrentIndexChromosome, new Vector2(500, 50), Color.White);
 
             m_SpriteBatch.End();
             base.Draw(gameTime);

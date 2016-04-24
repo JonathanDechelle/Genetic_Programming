@@ -14,6 +14,7 @@ namespace GeneticProgramming
     { 
         //Create only one time the random
         public static Random m_Random = new Random();
+        public static SpriteFont m_Font;
 
         public static Texture2D Base_Texture, Outline_Texture, Gazon_Texture, Rock_Texture;
         public static void Load(ContentManager Content)
@@ -22,6 +23,7 @@ namespace GeneticProgramming
             Outline_Texture = Content.Load<Texture2D>("Object_Texture_outline");
             Gazon_Texture = Content.Load<Texture2D>("Gazon_Texture");
             Rock_Texture = Content.Load<Texture2D>("Rock_Texture");
+            m_Font = Content.Load<SpriteFont>("Font");
         }
     }
 }
