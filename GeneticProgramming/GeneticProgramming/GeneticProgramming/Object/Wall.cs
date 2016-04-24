@@ -15,6 +15,7 @@ namespace GeneticProgramming
             : base(aPosition)
         {
             m_Color = Microsoft.Xna.Framework.Color.Sienna;
+            m_InitialColor = m_Color;
             m_Texture = Ressources.Rock_Texture;
             m_OutLine = Ressources.Outline_Texture;
         }

@@ -7,13 +7,17 @@ namespace GeneticProgramming
 {
     public class Example
     {
-        public static Chromosome bestChromosomeOfAll;
+        public static List<Chromosome> m_BestChromosomesInGenerations = new List<Chromosome>();
+
+        private static Chromosome m_BestChromosome;
+
         public static void GenerateSimpleGPExample(Map aMap)
         {
             const int CHROMOSOMES_PER_GENERATION = 500;
             const int PARAMATERS_PER_CHROMOSOMES = 4;
             const int NUMBERS_PAIR_FOR_REPRODUCTION = 1;
             const int MAX_ADDITIONAL_TRY = 8;
+            const int BEST_CHROMOSOME_BY_X_GENERATION = 30;
             int m_MaximumFitness = aMap.GetMaximumFitness();
             int m_MaxTry = m_MaximumFitness + MAX_ADDITIONAL_TRY;
             double currentPopulationMaxAdaptation;
@@ -27,6 +31,7 @@ namespace GeneticProgramming
             population.ComputeAdaptation();
             currentPopulationMaxAdaptation = population.GetMaxAdaptation();
 
+            int nbGenerations = 0;
             while (currentPopulationMaxAdaptation < m_MaximumFitness) 
             {
                 population.ToString();
@@ -73,10 +78,31 @@ namespace GeneticProgramming
                 population.SetChromosomes(newPopulation.GetChromosomes()); 
                 population.ComputeAdaptation();
 
-                currentPopulationMaxAdaptation = population.GetMaxAdaptation();
+                m_BestChromosome = population.GetBestChromosome();
+                currentPopulationMaxAdaptation = m_BestChromosome.m_Adaptation;
+
+                nbGenerations++;
+                if (nbGenerations % BEST_CHROMOSOME_BY_X_GENERATION == 0)
+                {
+                    int count = m_BestChromosomesInGenerations.Count;
+                    if (count == 0)
+                    {
+                        m_BestChromosomesInGenerations.Add(m_BestChromosome);
+                        continue;
+                    }
+                    else if (m_BestChromosome.m_Adaptation > m_BestChromosomesInGenerations[count - 1].m_Adaptation)
+                    {
+                        m_BestChromosomesInGenerations.Add(m_BestChromosome);
+                    }
+                }
             }
 
-            bestChromosomeOfAll = population.GetBestChromosome();
+            if (!m_BestChromosomesInGenerations.Contains(m_BestChromosome))
+            {
+                m_BestChromosomesInGenerations.Add(m_BestChromosome);
+            }
+
+            Console.WriteLine("Nb Generation = " + nbGenerations); 
         }
 
         /*

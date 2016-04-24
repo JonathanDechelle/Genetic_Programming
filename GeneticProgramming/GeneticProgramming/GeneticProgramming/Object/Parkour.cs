@@ -9,15 +9,12 @@ namespace GeneticProgramming
     /// <summary>
     /// This object represent the surface where the player is allow to pass
     /// </summary>
-    public class Floor:BaseObject
+    public class Parkour:Floor
     {
-        public Floor(Vector2 aPosition)
+        public Parkour(Vector2 aPosition)
             : base(aPosition)
         {
-            m_Color = Microsoft.Xna.Framework.Color.CornflowerBlue;
-
-            m_OutLine = Ressources.Outline_Texture;
-            //m_Texture = Ressources.Gazon_Texture;
+           /* used only for fitness */
         }
     }
 }

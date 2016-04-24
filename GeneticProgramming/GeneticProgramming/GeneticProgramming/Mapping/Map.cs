@@ -124,6 +124,30 @@ namespace GeneticProgramming
             return m_Grid[(int)aPositionIndexed.Y, (int)aPositionIndexed.X].m_Object;
         }
 
+        public void ResetColorElement(Vector2 aPositionIndexed)
+        {
+            BaseObject baseObject = GetElementAtIndex(aPositionIndexed);
+            baseObject.m_Color = baseObject.m_InitialColor;
+        }
+
+        public void PassOnElement(Vector2 aPositionIndexed)
+        {
+            BaseObject baseObject = GetElementAtIndex(aPositionIndexed);
+            baseObject.m_Color = baseObject.m_PassOnColor;
+        }
+
+        public void ResetAllColor()
+        {
+            for (int i = 0; i < m_Grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < m_Grid.GetLength(1); j++)
+                {
+                    Vector2 index = new Vector2(i, j);
+                    ResetColorElement(index);
+                }
+            }
+        }
+
         //Draw each object in the grid
         public void Draw(SpriteBatch spritebatch)
         {

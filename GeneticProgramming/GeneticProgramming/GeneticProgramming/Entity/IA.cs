@@ -15,6 +15,7 @@ namespace GeneticProgramming
     public class IA : BaseObject
     {
         public float m_MovementSpeed;
+        public bool m_HasFinish;
 
         private int m_MovementIndex = 0;
         public int[] m_Movements; 
@@ -23,26 +24,44 @@ namespace GeneticProgramming
         private int m_Adaptation = 0;
 
         private float m_Timer = 0;
+        private float m_WaitingTime;
         private float m_BaseDistance;
-        private float FAKE_FRAME_RATE = 60;
+        private Vector2 m_BasePosition;
+        private const float FAKE_FRAME_RATE = 60;
 
         public IA(Vector2 aPosition)
             : base(aPosition)
         {
+            m_BasePosition = aPosition;
             m_Color = Microsoft.Xna.Framework.Color.Green;
             m_BaseDistance = m_Texture.Bounds.Width;
-            m_Timer = FAKE_FRAME_RATE * 5; // just for testing
+            m_WaitingTime = FAKE_FRAME_RATE * 5; // just for testing
+
+            m_Timer = m_WaitingTime;
+        }
+
+        public void ResetBasePosition()
+        {
+            m_Position = m_BasePosition;
+            m_HasFinish = false;
+            m_MovementIndex = 0;
+            m_Timer = m_WaitingTime;
+            m_KnowPositions.Clear();
         }
 
         public void Update(Map aMap)
         {
+            m_Timer -= m_MovementSpeed;
             if(m_MovementIndex > m_Movements.Length - 1)
             {
-                int adaptation = m_Adaptation;
+                if (m_Timer < -m_WaitingTime)
+                {
+                    m_HasFinish = true;
+                }
+
                 return;
             }
-
-            m_Timer -= m_MovementSpeed;
+           
             if (m_Timer < 0)
             {
                 Vector2 currentPositionIndexed = aMap.GetPositionToIndex(m_Position);
@@ -68,7 +87,7 @@ namespace GeneticProgramming
                         m_KnowPositions.Add(newPositionIndexed);
                         m_Adaptation++;
 
-                        aMap.GetElementAtIndex(newPositionIndexed).m_Color = Color.Red;
+                        aMap.PassOnElement(newPositionIndexed);
                     }
                 }
 

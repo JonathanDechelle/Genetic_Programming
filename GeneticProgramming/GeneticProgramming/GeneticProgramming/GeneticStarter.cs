@@ -21,6 +21,10 @@ namespace GeneticProgramming
         Map m_Map;
         IA m_IA;
 
+        List<Chromosome> m_BestChromosomes;
+        private int m_CurrentIndexChromosome = 0;
+        private int m_LastIndexChromosome = -1;
+
         private const float IA_SPEED = 5f; 
 
         public GeneticStarter()
@@ -46,7 +50,7 @@ namespace GeneticProgramming
             m_IA.m_MovementSpeed = IA_SPEED;
 
             Example.GenerateSimpleGPExample(m_Map);
-            m_IA.m_Movements = Example.bestChromosomeOfAll.GetGenes();
+            m_BestChromosomes = Example.m_BestChromosomesInGenerations;
         }
 
 		protected override void UnloadContent()
@@ -59,8 +63,25 @@ namespace GeneticProgramming
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            m_IA.Update(m_Map);
+            if (m_CurrentIndexChromosome >= m_BestChromosomes.Count)
+            {
+                return;
+            }
 
+            if (m_CurrentIndexChromosome != m_LastIndexChromosome)
+            {
+                m_Map.ResetAllColor();
+                m_IA.ResetBasePosition();
+                m_IA.m_Movements = m_BestChromosomes[m_CurrentIndexChromosome].GetGenes();
+            }
+
+            m_IA.Update(m_Map);
+            m_LastIndexChromosome = m_CurrentIndexChromosome;
+
+            if (m_IA.m_HasFinish)
+            {
+                m_CurrentIndexChromosome++;
+            }
             Console.Read();
             base.Update(gameTime);
         }

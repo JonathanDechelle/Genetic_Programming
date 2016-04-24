@@ -11,6 +11,8 @@ namespace GeneticProgramming
     {
         public Vector2 m_Position;
         public Color m_Color;
+        public Color m_InitialColor;
+        public Color m_PassOnColor;
         protected Texture2D m_Texture;
         protected Texture2D m_OutLine;
 
