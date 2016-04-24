@@ -32,7 +32,16 @@ namespace GeneticProgramming
 
         public Chromosome[] GetChromosomes()
         {
-            return m_Chromosomes;
+            List<Chromosome> finalChromosomes = new List<Chromosome>();
+            for (int i = 0; i < m_Chromosomes.Length; i++)
+            {
+                if (m_Chromosomes[i] != null)
+                {
+                    finalChromosomes.Add(m_Chromosomes[i]);
+                }
+            }
+
+            return finalChromosomes.ToArray();
         }
 
         public void SetChromosomes(Chromosome[] aChromosomes)

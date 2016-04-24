@@ -18,9 +18,9 @@ namespace GeneticProgramming
             int m_MaxTry = m_MaximumFitness + MAX_ADDITIONAL_TRY;
             double currentPopulationMaxAdaptation;
 
-            GeneticOperator.SetMutationProbability(0.05f);
-            GeneticOperator.SetCrossOverOnChromosomeProbability(0.50f);
-            GeneticOperator.SetSelectionForReproductionProbability(0.95f);
+            GeneticOperator.m_MutationPercent = 0.05f;
+            GeneticOperator.m_CrossOverPercent = 0.50f;
+            GeneticOperator.m_SelectionForReproductionPercent = 0.95f;
 
             PopulationContour population = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
             population.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
@@ -35,8 +35,11 @@ namespace GeneticProgramming
                 PopulationContour newPopulation = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
 
                 #region elitisme
-                Chromosome[] chromosomes = GeneticOperator.GetElites(population);
-                newPopulation.AddChromosomes(chromosomes);
+                Chromosome[] parents = GeneticOperator.GetElites(population, GeneticOperator.m_CrossOverPercent);
+                newPopulation.AddChromosomes(parents);
+
+                Chromosome[] childrens = GeneticOperator.CrossOver1Point(parents); // parents are 100% crossOver 
+                newPopulation.AddChromosomes(childrens);
                 #endregion
 
                 #region Tournament

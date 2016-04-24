@@ -7,25 +7,10 @@ namespace GeneticProgramming
 {
     public class GeneticOperator
     {
-        private static float m_MutationPercent;
-        private static float m_CrossOverPercent;
-        private static float m_SelectionForReproductionPercent;
+        public static float m_MutationPercent;
+        public static float m_CrossOverPercent;
+        public static float m_SelectionForReproductionPercent;
         private const int PAIR_GAP = 2;
-
-        public static void SetMutationProbability(float aPercent)
-        {
-            m_MutationPercent = aPercent;
-        }
-
-        public static void SetCrossOverOnChromosomeProbability(float aPercent)
-        {
-            m_CrossOverPercent = aPercent;
-        }
-
-        public static void SetSelectionForReproductionProbability(float aPercent)
-        {
-            m_SelectionForReproductionPercent = aPercent;
-        }
 
         public static Chromosome GetRandomChromosome(Population aPopulation)
         {
@@ -42,23 +27,29 @@ namespace GeneticProgramming
 
         /*enjambement : Possibilité de chance qu’un bit soit
                         échangé avec son homologue sur l’autre chromosome */
-        public static void CrossOver1Point(Population aPopulation)
+        public static Chromosome[] CrossOver1Point(Chromosome[] aChromosomes, float aPercent = 1f)
         {
-            int affectedChromosomes = (int)(aPopulation.GetCount() * m_CrossOverPercent);
-            while (affectedChromosomes > PAIR_GAP - 1)
+            int affectedChromosomes = (int)(aChromosomes.Length * aPercent);
+            int maximumLoop = PAIR_GAP - 1;
+            List<Chromosome> finalChromosomes = new List<Chromosome>();
+            while (affectedChromosomes > maximumLoop)
             {
-                Chromosome chromosome1 = GetRandomChromosome(aPopulation);
+                Chromosome chromosome1 = GetRandomChromosome(aChromosomes).Clone();
                 Chromosome chromosome2 = null;
 
                 while (chromosome2 == null || chromosome2 == chromosome1)
                 {
-                    chromosome2 = GetRandomChromosome(aPopulation);
+                    chromosome2 = GetRandomChromosome(aChromosomes).Clone();
                 }
 
                 ExchangeGene(chromosome1, chromosome2);
 
+                finalChromosomes.Add(chromosome1);
+                finalChromosomes.Add(chromosome2);
                 affectedChromosomes -= PAIR_GAP;
             }
+
+            return finalChromosomes.ToArray();
         }
 
         private static void ExchangeGene(Chromosome aChromosome1, Chromosome aChromosome2)
@@ -76,10 +67,10 @@ namespace GeneticProgramming
             }
         }
 
-        public static Chromosome[] GetElites(Population aPopulation)
+        public static Chromosome[] GetElites(Population aPopulation, float aPercent = 1f)
         {
             Chromosome[] chromosomes = aPopulation.GetChromosomesOrderedByHighestPerformance();
-            int affectedChromosomes = (int)(aPopulation.GetCount() * m_CrossOverPercent);
+            int affectedChromosomes = (int)(aPopulation.GetCount() * aPercent);
 
             Chromosome[] chromosomesElites = new Chromosome[affectedChromosomes];
             for (int i = 0; i < affectedChromosomes; i++)
@@ -87,28 +78,7 @@ namespace GeneticProgramming
                 chromosomesElites[i] = chromosomes[i];
             }
 
-            CrossOver1PointForElites(chromosomesElites);
             return chromosomesElites;
-        }
-
-        private static void CrossOver1PointForElites(Chromosome[] aChromosomesElite) // A OPTIMISER
-        {
-            int eliteStartIndex = aChromosomesElite.Length - 1;
-            int eliteIndex;
-            int maximumLoop = PAIR_GAP - 1;
-
-            for (eliteIndex = eliteStartIndex; eliteIndex > maximumLoop; eliteIndex -= PAIR_GAP)
-            {
-                Chromosome chromosome1 = GetRandomChromosome(aChromosomesElite);
-                Chromosome chromosome2 = null;
-
-                while (chromosome2 == null || chromosome2 == chromosome1)
-                {
-                    chromosome2 = GetRandomChromosome(aChromosomesElite);
-                }
-
-                ExchangeGene(chromosome1, chromosome2);
-            }
         }
 
         //mutation : Possibilité de chance q’un bit mute (passer de 1 à 0 ou de 0 à 1)
