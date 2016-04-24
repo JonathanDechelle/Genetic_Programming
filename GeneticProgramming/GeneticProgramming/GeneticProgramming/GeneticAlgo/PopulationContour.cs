@@ -17,7 +17,8 @@ namespace GeneticProgramming
         public override void ComputeAdaptation()
         {
             m_AdaptationSum = 0;
-            for (int i = 0; i < GetCount(); i++)
+            int count = GetCount();
+            for (int i = 0; i < count; i++)
             {
                 ComputeChromosomeAdaptation(m_Chromosomes[i]);
                 m_AdaptationSum += m_Chromosomes[i].m_Adaptation;
@@ -47,7 +48,7 @@ namespace GeneticProgramming
                 Vector2 newPositionIndexed = currentPositionIndexed + nextMove;
                 if (m_Map.HasElementAtIndex(newPositionIndexed, typeof(Wall)))
                 {
-                    return;
+                    continue;
                 }
 
                 if (m_Map.HasElementAtIndex(newPositionIndexed, typeof(Parkour)))

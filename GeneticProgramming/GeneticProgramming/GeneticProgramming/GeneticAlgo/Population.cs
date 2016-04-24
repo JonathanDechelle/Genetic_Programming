@@ -147,7 +147,8 @@ namespace GeneticProgramming
         public double GetMinAdaptation()
         {
             double min = double.MaxValue;
-            for (int i = 0; i < GetCount(); i++)
+            int count = GetCount();
+            for (int i = 0; i < count; i++)
             {
                 if (m_Chromosomes[i].m_Adaptation < min)
                 {

@@ -18,22 +18,22 @@ namespace GeneticProgramming
             int m_MaxTry = m_MaximumFitness + MAX_ADDITIONAL_TRY;
             double currentPopulationMaxAdaptation;
 
-            GeneticOperator.m_MutationPercent = 0.05f;
+            GeneticOperator.m_MutationPercent = 0.03f;
             GeneticOperator.m_CrossOverPercent = 0.50f;
-            GeneticOperator.m_SelectionForReproductionPercent = 0.95f;
+            GeneticOperator.m_SelectionForReproductionPercent = 1.00f;
 
             PopulationContour population = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
             population.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
             population.ComputeAdaptation();
             currentPopulationMaxAdaptation = population.GetMaxAdaptation();
 
-            for (int i = 0; i < 10; i++) //nb MAx generation
+            while (currentPopulationMaxAdaptation < m_MaximumFitness) 
             {
                 population.ToString();
 
                 //Reproduction
                 PopulationContour newPopulation = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);
-
+                
                 #region elitisme
                 Chromosome[] parents = GeneticOperator.GetElites(population, GeneticOperator.m_CrossOverPercent);
                 newPopulation.AddChromosomes(parents);
@@ -68,7 +68,7 @@ namespace GeneticProgramming
                 #endregion
 
                 newPopulation.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
-                //GeneticOperator.Mutate(newPopulation);
+                GeneticOperator.Mutate(newPopulation);
 
                 population.SetChromosomes(newPopulation.GetChromosomes()); 
                 population.ComputeAdaptation();
