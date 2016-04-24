@@ -40,6 +40,7 @@ namespace GeneticProgramming
 
                 Chromosome[] childrens = GeneticOperator.CrossOver1Point(parents); // parents are 100% crossOver 
                 newPopulation.AddChromosomes(childrens);
+                newPopulation.ComputeAdaptation();
                 #endregion
 
                 #region Tournament
@@ -66,10 +67,9 @@ namespace GeneticProgramming
                 */
                 #endregion
 
-                //GeneticOperator.CrossOver1Point(population);
+                newPopulation.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
                 //GeneticOperator.Mutate(newPopulation);
 
-                newPopulation.GenerateAdditionalPopulation(m_MaxTry, PARAMATERS_PER_CHROMOSOMES);
                 population.SetChromosomes(newPopulation.GetChromosomes()); 
                 population.ComputeAdaptation();
 
