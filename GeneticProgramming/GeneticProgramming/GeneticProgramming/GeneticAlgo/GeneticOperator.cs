@@ -84,10 +84,12 @@ namespace GeneticProgramming
         //mutation : Possibilité de chance q’un bit mute (passer de 1 à 0 ou de 0 à 1)
         public static void Mutate(Population aPopulation)
         {
-            for (int i = 0; i < aPopulation.GetCount(); i++)
+            int count = aPopulation.GetCount();
+            for (int i = 0; i < count; i++)
             {
                 Chromosome chromosome = aPopulation.GetChromosomeAt(i);
-                for (int j = 0; j < chromosome.GetLenght(); j++)
+                int chromosomeLength = chromosome.GetLenght();
+                for (int j = 0; j < chromosomeLength; j++)
                 {
                     double mutationPossibility = Ressources.m_Random.NextDouble();
                     if (mutationPossibility > m_MutationPercent)

@@ -40,6 +40,8 @@ namespace GeneticProgramming
                 m_ChromosomeBit[i] = aChromosome.m_ChromosomeBit[i];
             }
 
+            m_NbParameter = aChromosome.m_NbParameter;
+
             RebuildDebugText();
         }
 
