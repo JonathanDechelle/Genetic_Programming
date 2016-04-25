@@ -82,7 +82,7 @@ namespace GeneticProgramming
             {
                 m_CurrentIndexChromosome++;
             }
-            Console.Read();
+            //Console.Read();*/
             base.Update(gameTime);
         }
 
