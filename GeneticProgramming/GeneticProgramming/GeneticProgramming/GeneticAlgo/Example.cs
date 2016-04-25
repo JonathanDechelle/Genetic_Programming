@@ -13,17 +13,17 @@ namespace GeneticProgramming
 
         public static void GenerateSimpleGPExample(Map aMap)
         {
-            const int CHROMOSOMES_PER_GENERATION = 50;
+            const int CHROMOSOMES_PER_GENERATION = 100;
             const int PARAMATERS_PER_CHROMOSOMES = 4;
             const int NUMBERS_PAIR_FOR_REPRODUCTION = 1;
             const int MAX_ADDITIONAL_TRY = 5;
-            const double BEST_CHROMOSOME_BY_X_GENERATION = 30;
+            const double BEST_CHROMOSOME_BY_X_GENERATION = 25;
             int m_MaximumFitness = aMap.GetMaximumFitness();
             int m_MaxTry = m_MaximumFitness + MAX_ADDITIONAL_TRY;
             double currentPopulationMaxAdaptation;
 
             GeneticOperator.m_MutationPercent = 0.03f;
-            GeneticOperator.m_CrossOverPercent = 0.50f;
+            GeneticOperator.m_CrossOverPercent = 0.15f;
             GeneticOperator.m_SelectionForReproductionPercent = 1.00f;
 
             PopulationContour population = new PopulationContour(CHROMOSOMES_PER_GENERATION, aMap);

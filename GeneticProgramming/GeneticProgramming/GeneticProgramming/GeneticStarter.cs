@@ -25,7 +25,7 @@ namespace GeneticProgramming
         private int m_CurrentIndexChromosome = 0;
         private int m_LastIndexChromosome = -1;
 
-        private const float IA_SPEED = 5f; 
+        private const float IA_SPEED = 7f; 
 
         public GeneticStarter()
         {
@@ -93,7 +93,7 @@ namespace GeneticProgramming
 
             m_Map.Draw(m_SpriteBatch);
             m_IA.Draw(m_SpriteBatch);
-            m_SpriteBatch.DrawString(Ressources.m_Font, "CHROMOSOME #" + m_CurrentIndexChromosome, new Vector2(500, 50), Color.White);
+            m_SpriteBatch.DrawString(Ressources.m_Font, "CHROMOSOME #" + (m_CurrentIndexChromosome + 1), new Vector2(500, 50), Color.White);
 
             m_SpriteBatch.End();
             base.Draw(gameTime);
