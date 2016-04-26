@@ -6,10 +6,10 @@ using Microsoft.Xna.Framework;
 
 namespace GeneticProgramming
 {
-    public class PopulationContour : Population
+    public class OutlinePopulation : Population
     {
-        private Map m_Map;
-        public PopulationContour(int aPopulationCount, Map aMap) : base(aPopulationCount)
+        private OutlineMap m_Map;
+        public OutlinePopulation(int aPopulationCount, OutlineMap aMap) : base(aPopulationCount)
         {
             m_Map = aMap;
         }

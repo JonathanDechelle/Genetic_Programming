@@ -18,7 +18,7 @@ namespace GeneticProgramming
     {
         GraphicsDeviceManager m_Graphics;
         SpriteBatch m_SpriteBatch;
-        Map m_Map;
+        OutlineMap m_Map;
         IA m_IA;
 
         List<Chromosome> m_BestChromosomes;
@@ -44,7 +44,7 @@ namespace GeneticProgramming
         {
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
             Ressources.Load(Content);
-            m_Map = new Map("Map_1_Easy");
+            m_Map = new OutlineMap("Map_1_Easy");
 
             m_IA = new IA(m_Map.GetIAStartPosition());
             m_IA.m_MovementSpeed = IA_SPEED;

@@ -19,11 +19,9 @@ namespace GeneticProgramming
 
     public class Map
     {
-        private Vector2 m_IAStartIndex = new Vector2(4, 4);
-        private int m_MaxFitness = 0;
         private int m_Width;
         private int m_Height;
-        private MapTile[,] m_Grid;
+        protected MapTile[,] m_Grid;
 
         private float m_TileWidth = Ressources.Base_Texture.Width;
         private float m_TileHeight = Ressources.Base_Texture.Height;
@@ -62,28 +60,6 @@ namespace GeneticProgramming
                 }
             }
             #endregion
-
-            ComputeMaximumFitness();
-        }
-
-        private void ComputeMaximumFitness() 
-        {
-            m_MaxFitness = 0;
-            for (int i = 0; i < m_Grid.GetLength(0); i++)
-            {
-                for (int j = 0; j < m_Grid.GetLength(1); j++)
-                {
-                    if (HasElementAtIndex(new Vector2(i, j), typeof(Parkour)))
-                    {
-                        m_MaxFitness++;
-                    }
-                }
-            }
-        }
-
-        public int GetMaximumFitness()
-        {
-            return m_MaxFitness;
         }
           
         public Vector2 GetPositionToIndex(Vector2 aPosition)
@@ -100,16 +76,6 @@ namespace GeneticProgramming
             position.X = aIndex.X * m_TileWidth;
             position.Y = aIndex.Y * m_TileHeight;
             return position;
-        }
-
-        public Vector2 GetIAStartIndex()
-        {
-            return m_IAStartIndex;
-        }
-
-        public Vector2 GetIAStartPosition()
-        {
-            return GetIndexToPosition(m_IAStartIndex);
         }
 
         public bool HasElementAtIndex(Vector2 aPositionIndexed, Type aType)
