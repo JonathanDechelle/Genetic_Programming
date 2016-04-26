@@ -20,7 +20,6 @@ namespace GeneticProgramming
         private int m_MovementIndex = 0;
         public int[] m_Movements; 
 
-        protected List<Vector2> m_KnowPositions = new List<Vector2>();
         protected Vector2 m_NextMoveIndexed;
 
         private float m_Timer = 0;
@@ -46,7 +45,6 @@ namespace GeneticProgramming
             m_HasFinish = false;
             m_MovementIndex = 0;
             m_Timer = m_WaitingTime;
-            m_KnowPositions.Clear();
         }
 
         public void Update(Map aMap)

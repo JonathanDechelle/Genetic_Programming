@@ -16,11 +16,7 @@ namespace GeneticProgramming
             base.DoNextMove(aMap);
             if (aMap.HasElementAtIndex(m_NextMoveIndexed, typeof(Parkour)))
             {
-                if (!m_KnowPositions.Contains(m_NextMoveIndexed))
-                {
-                    m_KnowPositions.Add(m_NextMoveIndexed);
-                    aMap.PassOnElement(m_NextMoveIndexed);
-                }
+                aMap.PassOnElement(m_NextMoveIndexed);
             }
         }
     }
