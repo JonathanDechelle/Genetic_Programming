@@ -14,9 +14,7 @@ namespace GeneticProgramming
 
         public static Chromosome GetRandomChromosome(Population aPopulation)
         {
-            int nbChromosomes = aPopulation.GetCount();
-            int aIndex = Ressources.m_Random.Next(nbChromosomes);
-            return aPopulation.GetChromosomeAt(aIndex);
+            return GetRandomChromosome(aPopulation.GetChromosomes());
         }
 
         public static Chromosome GetRandomChromosome(Chromosome[] aChromosomes)
@@ -197,7 +195,7 @@ namespace GeneticProgramming
                 {
                     aPopulation.RemoveChromosomes(chromosomesWinner.ToArray());
                     aPopulation.RemoveChromosomes(chromosomesLooser.ToArray());
-            }
+                }
             }
 
             return chromosomesWinner.ToArray();

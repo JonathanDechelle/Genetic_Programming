@@ -21,7 +21,6 @@ namespace GeneticProgramming
         public int[] m_Movements; 
 
         private List<Vector2> m_KnowPositions = new List<Vector2>();
-        private int m_Adaptation = 0;
 
         private float m_Timer = 0;
         private float m_WaitingTime;
@@ -85,7 +84,6 @@ namespace GeneticProgramming
                     if (!m_KnowPositions.Contains(newPositionIndexed))
                     {
                         m_KnowPositions.Add(newPositionIndexed);
-                        m_Adaptation++;
 
                         aMap.PassOnElement(newPositionIndexed);
                     }

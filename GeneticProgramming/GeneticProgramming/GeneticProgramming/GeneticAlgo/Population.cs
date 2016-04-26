@@ -259,13 +259,6 @@ namespace GeneticProgramming
 
         public override string ToString()
         {
-            //int populationCount = GetCount();
-            //Console.WriteLine("\r\nPopulation count = " + populationCount);
-           // for (int i = 0; i < populationCount; i++)
-            //{
-              //  Console.WriteLine(m_Chromosomes[i].ToString());
-            //}
-
             Console.WriteLine("fitness max = " + GetMaxAdaptation());
             return "";
         }
