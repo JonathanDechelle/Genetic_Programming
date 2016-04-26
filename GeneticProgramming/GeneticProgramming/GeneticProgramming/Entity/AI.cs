@@ -12,7 +12,7 @@ namespace GeneticProgramming
         NONE = 4
     }
         
-    public class IA : BaseObject
+    public class AI : BaseObject
     {
         public float m_MovementSpeed;
         public bool m_HasFinish;
@@ -20,7 +20,8 @@ namespace GeneticProgramming
         private int m_MovementIndex = 0;
         public int[] m_Movements; 
 
-        private List<Vector2> m_KnowPositions = new List<Vector2>();
+        protected List<Vector2> m_KnowPositions = new List<Vector2>();
+        protected Vector2 m_NextMoveIndexed;
 
         private float m_Timer = 0;
         private float m_WaitingTime;
@@ -28,7 +29,7 @@ namespace GeneticProgramming
         private Vector2 m_BasePosition;
         private const float FAKE_FRAME_RATE = 60;
 
-        public IA(Vector2 aPosition)
+        public AI(Vector2 aPosition)
             : base(aPosition)
         {
             m_BasePosition = aPosition;
@@ -63,34 +64,29 @@ namespace GeneticProgramming
            
             if (m_Timer < 0)
             {
-                Vector2 currentPositionIndexed = aMap.GetPositionToIndex(m_Position);
-                Vector2 nextMove = Vector2.Zero;
-                switch((EMovement)m_Movements[m_MovementIndex])
-                {
-                    case EMovement.UP:    nextMove = -Vector2.UnitY; break;
-                    case EMovement.DOWN:  nextMove =  Vector2.UnitY; break;
-                    case EMovement.LEFT:  nextMove = -Vector2.UnitX; break;
-                    case EMovement.RIGHT: nextMove =  Vector2.UnitX; break;
-                }
-
-                Vector2 newPositionIndexed = currentPositionIndexed + nextMove;
-                if (!aMap.HasElementAtIndex(newPositionIndexed, typeof(Wall)))
-                {
-                    m_Position = newPositionIndexed * m_BaseDistance;
-                }
-
-                if (aMap.HasElementAtIndex(newPositionIndexed, typeof(Parkour)))
-                {
-                    if (!m_KnowPositions.Contains(newPositionIndexed))
-                    {
-                        m_KnowPositions.Add(newPositionIndexed);
-
-                        aMap.PassOnElement(newPositionIndexed);
-                    }
-                }
+                DoNextMove(aMap);
 
                 m_Timer = FAKE_FRAME_RATE;
                 m_MovementIndex++;
+            }
+        }
+
+        protected virtual void DoNextMove(Map aMap)
+        {
+            Vector2 currentPositionIndexed = aMap.GetPositionToIndex(m_Position);
+            Vector2 nextMove = Vector2.Zero;
+            switch ((EMovement)m_Movements[m_MovementIndex])
+            {
+                case EMovement.UP: nextMove = -Vector2.UnitY; break;
+                case EMovement.DOWN: nextMove = Vector2.UnitY; break;
+                case EMovement.LEFT: nextMove = -Vector2.UnitX; break;
+                case EMovement.RIGHT: nextMove = Vector2.UnitX; break;
+            }
+
+            m_NextMoveIndexed = currentPositionIndexed + nextMove;
+            if (!aMap.HasElementAtIndex(m_NextMoveIndexed, typeof(Wall)))
+            {
+                m_Position = m_NextMoveIndexed * m_BaseDistance;
             }
         }
     }

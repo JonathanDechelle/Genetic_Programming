@@ -19,7 +19,7 @@ namespace GeneticProgramming
         GraphicsDeviceManager m_Graphics;
         SpriteBatch m_SpriteBatch;
         OutlineMap m_Map;
-        IA m_IA;
+        AIOutline m_IA;
 
         List<Chromosome> m_BestChromosomes;
         private int m_CurrentIndexChromosome = 0;
@@ -46,7 +46,7 @@ namespace GeneticProgramming
             Ressources.Load(Content);
             m_Map = new OutlineMap("Map_1_Easy");
 
-            m_IA = new IA(m_Map.GetIAStartPosition());
+            m_IA = new AIOutline(m_Map.GetIAStartPosition());
             m_IA.m_MovementSpeed = IA_SPEED;
 
             Example.GenerateSimpleGPExample(m_Map);
