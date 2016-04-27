@@ -12,30 +12,30 @@ namespace GeneticProgramming
 
         public static void GenerateSimpleGPExample(OutlineMap aMap)
         {
-            SituationData outlineSituation = new SituationData();
-            outlineSituation.m_ParametersPerChromosomes = 4;
-            outlineSituation.m_ChromosomesPerGeneration = 100;
-            outlineSituation.m_NumbersPairForReproduction = 1;
-            outlineSituation.m_AdditionalTry = 3;
-            outlineSituation.m_BestChromosomeByXGeneration = 35f;
-            outlineSituation.m_MaximumFitness = aMap.GetMaximumFitness();
+            SituationData situationData = new SituationData();
+            situationData.m_ParametersPerChromosomes = 4;
+            situationData.m_ChromosomesPerGeneration = 100;
+            situationData.m_NumbersPairForReproduction = 1;
+            situationData.m_AdditionalTry = 3;
+            situationData.m_BestChromosomeByXGeneration = 35f;
+            situationData.m_MaximumFitness = aMap.GetMaximumFitness();
 
             GeneticOperator.m_MutationPercent = 0.03f;
             GeneticOperator.m_CrossOverPercent = 0.15f;
             GeneticOperator.m_SelectionForReproductionPercent = 1.00f;
 
-            OutlinePopulation population = new OutlinePopulation(outlineSituation.m_ChromosomesPerGeneration, aMap);
-            population.GenerateAdditionalPopulation(outlineSituation.m_MaxTry, outlineSituation.m_ParametersPerChromosomes);
+            OutlinePopulation population = new OutlinePopulation(situationData.m_ChromosomesPerGeneration, aMap);
+            population.GenerateAdditionalPopulation(situationData);
             population.ComputeAdaptation();
-            outlineSituation.m_CurrentMaxAdaptation = population.GetMaxAdaptation();
+            situationData.m_CurrentMaxAdaptation = population.GetMaxAdaptation();
 
             int nbGenerations = 0;
-            while (outlineSituation.m_CurrentMaxAdaptation < outlineSituation.m_MaximumFitness) 
+            while (situationData.m_CurrentMaxAdaptation < situationData.m_MaximumFitness) 
             {
                 population.ToString();
 
                 //Reproduction
-                OutlinePopulation newPopulation = new OutlinePopulation(outlineSituation.m_ChromosomesPerGeneration, aMap);
+                OutlinePopulation newPopulation = new OutlinePopulation(situationData.m_ChromosomesPerGeneration, aMap);
                 
                 #region elitisme
                 Chromosome[] parents = GeneticOperator.GetElites(population, GeneticOperator.m_CrossOverPercent);
@@ -70,17 +70,17 @@ namespace GeneticProgramming
                 */
                 #endregion
 
-                newPopulation.GenerateAdditionalPopulation(outlineSituation.m_MaxTry, outlineSituation.m_ParametersPerChromosomes);
+                newPopulation.GenerateAdditionalPopulation(situationData);
                 GeneticOperator.Mutate(newPopulation);
 
                 population.SetChromosomes(newPopulation.GetChromosomes()); 
                 population.ComputeAdaptation();
 
                 m_BestChromosome = population.GetBestChromosome();
-                outlineSituation.m_CurrentMaxAdaptation = m_BestChromosome.m_Adaptation;
+                situationData.m_CurrentMaxAdaptation = m_BestChromosome.m_Adaptation;
 
                 nbGenerations++;
-                if (nbGenerations % outlineSituation.m_BestChromosomeByXGeneration == 0)
+                if (nbGenerations % situationData.m_BestChromosomeByXGeneration == 0)
                 {
                     double bestAdaptation = m_Situation.GetBestAdaptation();
                     if (bestAdaptation < m_BestChromosome.m_Adaptation)

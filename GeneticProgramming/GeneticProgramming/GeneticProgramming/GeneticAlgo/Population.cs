@@ -17,11 +17,11 @@ namespace GeneticProgramming
             m_Chromosomes = new Chromosome[aPopulationCount];
         }
 
-        public void GenerateAdditionalPopulation(int aChromosomeBitCount, int aNbParamaters)
+        public void GenerateAdditionalPopulation(SituationData aSituationData)
         {
             for (int i = GetCount(); i < m_Chromosomes.Length; i++)
             {
-                m_Chromosomes[i] = new Chromosome(aChromosomeBitCount, aNbParamaters);
+                m_Chromosomes[i] = new Chromosome(aSituationData.m_MaxTry, aSituationData.m_ParametersPerChromosomes);
             }
         }
 
