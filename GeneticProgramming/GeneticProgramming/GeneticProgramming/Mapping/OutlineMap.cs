@@ -19,7 +19,7 @@ namespace GeneticProgramming
             ComputeMaximumFitness();
         }
 
-        private void ComputeMaximumFitness() 
+        protected void ComputeMaximumFitness() 
         {
             m_MaxFitness = 0;
             for (int i = 0; i < m_Grid.GetLength(0); i++)
