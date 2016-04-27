@@ -50,7 +50,7 @@ namespace GeneticProgramming
             m_IA.m_MovementSpeed = IA_SPEED;
 
             Example.GenerateSimpleGPExample(m_Map);
-            m_BestChromosomes = Example.m_BestChromosomesInGenerations;
+            m_BestChromosomes = Example.m_Situation.GetBestChromosomes();
         }
 
 		protected override void UnloadContent()

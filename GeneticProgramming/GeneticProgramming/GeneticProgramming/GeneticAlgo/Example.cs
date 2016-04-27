@@ -7,8 +7,7 @@ namespace GeneticProgramming
 {
     public class Example
     {
-        public static List<Chromosome> m_BestChromosomesInGenerations = new List<Chromosome>();
-
+        public static Situation m_Situation = new Situation();
         private static Chromosome m_BestChromosome;
 
         public static void GenerateSimpleGPExample(OutlineMap aMap)
@@ -83,38 +82,17 @@ namespace GeneticProgramming
                 nbGenerations++;
                 if (nbGenerations % outlineSituation.m_BestChromosomeByXGeneration == 0)
                 {
-                    double bestAdaptation = GetBestAdaptation();
-                    if(bestAdaptation < m_BestChromosome.m_Adaptation)
+                    double bestAdaptation = m_Situation.GetBestAdaptation();
+                    if (bestAdaptation < m_BestChromosome.m_Adaptation)
                     {
-                        m_BestChromosomesInGenerations.Add(m_BestChromosome.Clone());
+                        m_Situation.AddABestChromosome(m_BestChromosome.Clone());
                     }
                 }
             }
 
-            if (!m_BestChromosomesInGenerations.Contains(m_BestChromosome))
-            {
-                m_BestChromosomesInGenerations.Add(m_BestChromosome);
-            }
-
+            m_Situation.AddABestChromosome(m_BestChromosome.Clone());
             Console.WriteLine("Nb Generation = " + nbGenerations); 
         }
-
-        private static double GetBestAdaptation()
-        {
-            double max = double.MinValue;
-            int count = m_BestChromosomesInGenerations.Count;
-            for (int i = 0; i < count; i++)
-            {
-                double adaptation = m_BestChromosomesInGenerations[i].m_Adaptation;
-                if (adaptation > max)
-                {
-                    max = adaptation;
-                }
-            }
-
-            return max;
-        }
-
         /*
          * Algorithme génétique générique
 1-	Générer une population de individus de taille N : x1, x2, x3,…, xN.
