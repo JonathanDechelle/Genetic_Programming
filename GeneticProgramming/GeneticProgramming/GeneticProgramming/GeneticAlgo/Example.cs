@@ -9,7 +9,6 @@ namespace GeneticProgramming
     {
         public static Situation m_Situation = new Situation();
         private static Chromosome m_BestChromosome;
-        private static SituationData m_SituationData;
 
         public static void GenerateSimpleGPExample(OutlineMap aMap, SituationData aSituationData)
         {
@@ -22,7 +21,7 @@ namespace GeneticProgramming
             aSituationData.m_CurrentMaxAdaptation = population.GetMaxAdaptation();
 
             int nbGenerations = 0;
-            while (aSituationData.m_CurrentMaxAdaptation < aSituationData.m_MaximumFitness) 
+            while (!aSituationData.HasSucceeded) 
             {
                 population.ToString();
 
