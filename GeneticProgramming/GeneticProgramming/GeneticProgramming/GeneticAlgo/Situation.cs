@@ -7,7 +7,20 @@ namespace GeneticProgramming
 {
     public class Situation
     {
-        public Situation() { }
+        private SituationData m_SituationData;
+
+        public Situation(SituationData aSituationData) 
+        {
+            m_SituationData = aSituationData;
+        }
+
+        public bool HasSucceeded
+        {
+            get
+            {
+                return m_SituationData.m_CurrentMaxAdaptation >= m_SituationData.m_MaximumFitness;
+            }
+        }
 
         private List<Chromosome> m_BestChromosomesInGenerations = new List<Chromosome>();
         public List<Chromosome> GetBestChromosomes()

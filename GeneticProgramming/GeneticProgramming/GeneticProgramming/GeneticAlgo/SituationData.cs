@@ -27,13 +27,5 @@ namespace GeneticProgramming
                 return m_AdditionalTry + m_MaximumFitness;
             }
         }
-
-        public bool HasSucceeded
-        {
-            get
-            {
-                return m_CurrentMaxAdaptation >= m_MaximumFitness;
-            }
-        }
     }
 }
