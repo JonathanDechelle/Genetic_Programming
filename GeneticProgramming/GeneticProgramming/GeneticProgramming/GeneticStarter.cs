@@ -19,6 +19,7 @@ namespace GeneticProgramming
         GraphicsDeviceManager m_Graphics;
         SpriteBatch m_SpriteBatch;
         OutlineMap m_Map;
+        SituationData m_SituationData;
         AIOutline m_IA;
 
         List<Chromosome> m_BestChromosomes;
@@ -49,7 +50,18 @@ namespace GeneticProgramming
             m_IA = new AIOutline(m_Map.GetIAStartPosition());
             m_IA.m_MovementSpeed = IA_SPEED;
 
-            Example.GenerateSimpleGPExample(m_Map);
+            m_SituationData = new SituationData();
+            m_SituationData.m_ParametersPerChromosomes = 4;
+            m_SituationData.m_ChromosomesPerGeneration = 100;
+            m_SituationData.m_NumbersPairForReproduction = 1;
+            m_SituationData.m_AdditionalTry = 3;
+            m_SituationData.m_BestChromosomeByXGeneration = 35f;
+            m_SituationData.m_MaximumFitness = m_Map.GetMaximumFitness();
+            m_SituationData.m_MutationPercent = 0.03f;
+            m_SituationData.m_CrossOverPercent = 0.15f;
+            m_SituationData.m_ReproductionPercent = 1.00f;
+
+            Example.GenerateSimpleGPExample(m_Map, m_SituationData);
             m_BestChromosomes = Example.m_Situation.GetBestChromosomes();
         }
 

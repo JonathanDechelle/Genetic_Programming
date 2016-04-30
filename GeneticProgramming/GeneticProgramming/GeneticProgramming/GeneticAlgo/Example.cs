@@ -9,36 +9,25 @@ namespace GeneticProgramming
     {
         public static Situation m_Situation = new Situation();
         private static Chromosome m_BestChromosome;
+        private static SituationData m_SituationData;
 
-        public static void GenerateSimpleGPExample(OutlineMap aMap)
+        public static void GenerateSimpleGPExample(OutlineMap aMap, SituationData aSituationData)
         {
-            //Set the situationData and Genetic Operator
-            SituationData situationData = new SituationData();
-            situationData.m_ParametersPerChromosomes = 4;
-            situationData.m_ChromosomesPerGeneration = 100;
-            situationData.m_NumbersPairForReproduction = 1;
-            situationData.m_AdditionalTry = 3;
-            situationData.m_BestChromosomeByXGeneration = 35f;
-            situationData.m_MaximumFitness = aMap.GetMaximumFitness();
-            situationData.m_MutationPercent = 0.03f;
-            situationData.m_CrossOverPercent = 0.15f;
-            situationData.m_ReproductionPercent = 1.00f;
-
-            GeneticOperator.SetOperatorPercents(situationData);
+            GeneticOperator.SetOperatorPercents(aSituationData);
 
             //Generate the first population 
-            OutlinePopulation population = new OutlinePopulation(situationData, aMap);
-            population.GenerateAdditionalPopulation(situationData);
+            OutlinePopulation population = new OutlinePopulation(aSituationData, aMap);
+            population.GenerateAdditionalPopulation(aSituationData);
             population.ComputeAdaptation();
-            situationData.m_CurrentMaxAdaptation = population.GetMaxAdaptation();
+            aSituationData.m_CurrentMaxAdaptation = population.GetMaxAdaptation();
 
             int nbGenerations = 0;
-            while (situationData.m_CurrentMaxAdaptation < situationData.m_MaximumFitness) 
+            while (aSituationData.m_CurrentMaxAdaptation < aSituationData.m_MaximumFitness) 
             {
                 population.ToString();
 
                 /*** REPRODUCTION START ***/
-                OutlinePopulation newPopulation = new OutlinePopulation(situationData.m_ChromosomesPerGeneration, aMap);
+                OutlinePopulation newPopulation = new OutlinePopulation(aSituationData.m_ChromosomesPerGeneration, aMap);
                 
                 /******** GET THE BEST CHROMOSOME ********/
                 Chromosome[] parents = GeneticOperator.GetElites(population);
@@ -50,7 +39,7 @@ namespace GeneticProgramming
                 /****************************************/
 
                 //Be sure population is equal to start generation
-                newPopulation.GenerateAdditionalPopulation(situationData);
+                newPopulation.GenerateAdditionalPopulation(aSituationData);
 
                 //Add random mutation
                 GeneticOperator.Mutate(newPopulation);
@@ -61,11 +50,11 @@ namespace GeneticProgramming
                 
                 //update the actual situation (who is the best chromsome and how he is adapted)
                 m_BestChromosome = population.GetBestChromosome();
-                situationData.m_CurrentMaxAdaptation = m_BestChromosome.m_Adaptation;
+                aSituationData.m_CurrentMaxAdaptation = m_BestChromosome.m_Adaptation;
 
                 //Use for external usage get list of X best chromoses during the experience
                 nbGenerations++;
-                if (nbGenerations % situationData.m_BestChromosomeByXGeneration == 0)
+                if (nbGenerations % aSituationData.m_BestChromosomeByXGeneration == 0)
                 {
                     double bestAdaptation = m_Situation.GetBestAdaptation();
                     if (bestAdaptation < m_BestChromosome.m_Adaptation)
