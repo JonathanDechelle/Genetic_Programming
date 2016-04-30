@@ -18,7 +18,7 @@ namespace GeneticProgramming
         public double m_BestChromosomeByXGeneration;
         public float m_MutationPercent;
         public float m_CrossOverPercent;
-        public float m_SelectionForReproductionPercent;
+        public float m_ReproductionPercent;
 
         public int m_MaxTry
         {

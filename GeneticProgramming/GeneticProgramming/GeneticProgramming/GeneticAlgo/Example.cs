@@ -21,11 +21,9 @@ namespace GeneticProgramming
             situationData.m_MaximumFitness = aMap.GetMaximumFitness();
             situationData.m_MutationPercent = 0.03f;
             situationData.m_CrossOverPercent = 0.15f;
-            situationData.m_SelectionForReproductionPercent = 1.00f;
+            situationData.m_ReproductionPercent = 1.00f;
 
-            GeneticOperator.m_MutationPercent = situationData.m_MutationPercent;
-            GeneticOperator.m_CrossOverPercent = situationData.m_CrossOverPercent;
-            GeneticOperator.m_SelectionForReproductionPercent = situationData.m_SelectionForReproductionPercent;
+            GeneticOperator.SetOperatorPercents(situationData);
 
             OutlinePopulation population = new OutlinePopulation(situationData, aMap);
             population.GenerateAdditionalPopulation(situationData);
@@ -41,7 +39,7 @@ namespace GeneticProgramming
                 OutlinePopulation newPopulation = new OutlinePopulation(situationData.m_ChromosomesPerGeneration, aMap);
                 
                 #region elitisme
-                Chromosome[] parents = GeneticOperator.GetElites(population, GeneticOperator.m_CrossOverPercent);
+                Chromosome[] parents = GeneticOperator.GetElites(population);
                 newPopulation.AddChromosomes(parents);
 
                 Chromosome[] childrens = GeneticOperator.CrossOver1Point(parents); // parents are 100% crossOver 

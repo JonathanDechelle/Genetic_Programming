@@ -7,10 +7,32 @@ namespace GeneticProgramming
 {
     public class GeneticOperator
     {
-        public static float m_MutationPercent;
-        public static float m_CrossOverPercent;
-        public static float m_SelectionForReproductionPercent;
+        private static float m_MutationPercent;
+        private static float m_CrossOverPercent;
+        private static float m_ReproductionPercent;
         private const int PAIR_GAP = 2;
+
+        public static void SetMutationPercent(float aMutationPercent)
+        {
+            m_MutationPercent = aMutationPercent;
+        }
+
+        public static void SetCrossOverPercent(float aCrossOverPercent)
+        {
+            m_CrossOverPercent = aCrossOverPercent;
+        }
+
+        public static void SetReproductionPercent(float aReproductionPercent)
+        {
+            m_ReproductionPercent = aReproductionPercent;
+        }
+
+        public static void SetOperatorPercents(SituationData aSituationData)
+        {
+            SetMutationPercent(aSituationData.m_MutationPercent);
+            SetCrossOverPercent(aSituationData.m_CrossOverPercent);
+            SetReproductionPercent(aSituationData.m_ReproductionPercent);
+        }
 
         public static Chromosome GetRandomChromosome(Population aPopulation)
         {
@@ -65,10 +87,10 @@ namespace GeneticProgramming
             }
         }
 
-        public static Chromosome[] GetElites(Population aPopulation, float aPercent = 1f)
+        public static Chromosome[] GetElites(Population aPopulation)
         {
             Chromosome[] chromosomes = aPopulation.GetChromosomesOrderedByHighestPerformance();
-            int affectedChromosomes = (int)(aPopulation.GetCount() * aPercent);
+            int affectedChromosomes = (int)(aPopulation.GetCount() * m_ReproductionPercent);
 
             Chromosome[] chromosomesElites = new Chromosome[affectedChromosomes];
             for (int i = 0; i < affectedChromosomes; i++)
@@ -186,7 +208,7 @@ namespace GeneticProgramming
             for (int i = 0; i < chromosomesWinner.Count; i++)
             {
                 double randomSelection = Ressources.m_Random.NextDouble();
-                if (randomSelection > m_SelectionForReproductionPercent)
+                if (randomSelection > m_ReproductionPercent)
                 {
                     chromosomesWinner.RemoveAt(i);
                     chromosomesLooser.RemoveAt(i);

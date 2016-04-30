@@ -17,9 +17,9 @@ namespace GeneticProgramming
             m_Chromosomes = new Chromosome[aPopulationCount];
         }
 
-        public Population(SituationData aSituationData)
+        public Population(SituationData aSituationData) : this(aSituationData.m_ChromosomesPerGeneration)
         {
-            Population(aSituationData.m_ChromosomesPerGeneration);
+
         }
 
         public void GenerateAdditionalPopulation(int aMaxTry, int aParametersPerChromosomes)
