@@ -12,6 +12,7 @@ namespace GeneticProgramming
 
         public static void GenerateSimpleGPExample(OutlineMap aMap)
         {
+            //Set the situationData and Genetic Operator
             SituationData situationData = new SituationData();
             situationData.m_ParametersPerChromosomes = 4;
             situationData.m_ChromosomesPerGeneration = 100;
@@ -25,6 +26,7 @@ namespace GeneticProgramming
 
             GeneticOperator.SetOperatorPercents(situationData);
 
+            //Generate the first population 
             OutlinePopulation population = new OutlinePopulation(situationData, aMap);
             population.GenerateAdditionalPopulation(situationData);
             population.ComputeAdaptation();
@@ -35,51 +37,33 @@ namespace GeneticProgramming
             {
                 population.ToString();
 
-                //Reproduction
+                /*** REPRODUCTION START ***/
                 OutlinePopulation newPopulation = new OutlinePopulation(situationData.m_ChromosomesPerGeneration, aMap);
                 
-                #region elitisme
+                /******** GET THE BEST CHROMOSOME ********/
                 Chromosome[] parents = GeneticOperator.GetElites(population);
                 newPopulation.AddChromosomes(parents);
 
                 Chromosome[] childrens = GeneticOperator.CrossOver1Point(parents); // parents are 100% crossOver 
                 newPopulation.AddChromosomes(childrens);
                 newPopulation.ComputeAdaptation();
-                #endregion
+                /****************************************/
 
-                #region Tournament
-                /*bool hasChromosomesInPopulation = true;
-                while (hasChromosomesInPopulation)
-                {
-                    Chromosome[] chromosomesWinner = GeneticOperator.ReproductionByTournamenent(population, NUMBERS_PAIR_FOR_REPRODUCTION);
-                    if (chromosomesWinner == null)
-                    {
-                        hasChromosomesInPopulation = false;
-
-                        for (int i = 0; i < population.GetCount(); i++)
-                        {
-                            newPopulation.AddChromosomes(population.GetChromosomes());
-                        }
-                        continue;
-                    }
-
-                    if (chromosomesWinner.Length > 0)
-                    {
-                        newPopulation.AddChromosomes(chromosomesWinner);
-                    }
-                }
-                */
-                #endregion
-
+                //Be sure population is equal to start generation
                 newPopulation.GenerateAdditionalPopulation(situationData);
-                GeneticOperator.Mutate(newPopulation);
 
+                //Add random mutation
+                GeneticOperator.Mutate(newPopulation);
+                
+                //Replace old generation by the new one
                 population.SetChromosomes(newPopulation.GetChromosomes()); 
                 population.ComputeAdaptation();
-
+                
+                //update the actual situation (who is the best chromsome and how he is adapted)
                 m_BestChromosome = population.GetBestChromosome();
                 situationData.m_CurrentMaxAdaptation = m_BestChromosome.m_Adaptation;
 
+                //Use for external usage get list of X best chromoses during the experience
                 nbGenerations++;
                 if (nbGenerations % situationData.m_BestChromosomeByXGeneration == 0)
                 {
@@ -91,9 +75,12 @@ namespace GeneticProgramming
                 }
             }
 
+            // Add the best chromose of all
             m_Situation.AddABestChromosome(m_BestChromosome.Clone());
-            Console.WriteLine("Nb Generation = " + nbGenerations); 
+            Console.WriteLine("Nb Generation = " + nbGenerations);
         }
+
+        #region algorithme explanation
         /*
          * Algorithme génétique générique
 1-	Générer une population de individus de taille N : x1, x2, x3,…, xN.
@@ -106,5 +93,6 @@ namespace GeneticProgramming
 8-	Remplacer l’ancienne population d’individus par la nouvelle.
 9-	Retourner à l’étape 2.
          */
+        #endregion
     }
 }
