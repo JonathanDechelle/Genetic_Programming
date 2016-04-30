@@ -16,6 +16,9 @@ namespace GeneticProgramming
         public int m_MaximumFitness;
         public double m_CurrentMaxAdaptation;
         public double m_BestChromosomeByXGeneration;
+        public float m_MutationPercent;
+        public float m_CrossOverPercent;
+        public float m_SelectionForReproductionPercent;
 
         public int m_MaxTry
         {

@@ -19,12 +19,15 @@ namespace GeneticProgramming
             situationData.m_AdditionalTry = 3;
             situationData.m_BestChromosomeByXGeneration = 35f;
             situationData.m_MaximumFitness = aMap.GetMaximumFitness();
+            situationData.m_MutationPercent = 0.03f;
+            situationData.m_CrossOverPercent = 0.15f;
+            situationData.m_SelectionForReproductionPercent = 1.00f;
 
-            GeneticOperator.m_MutationPercent = 0.03f;
-            GeneticOperator.m_CrossOverPercent = 0.15f;
-            GeneticOperator.m_SelectionForReproductionPercent = 1.00f;
+            GeneticOperator.m_MutationPercent = situationData.m_MutationPercent;
+            GeneticOperator.m_CrossOverPercent = situationData.m_CrossOverPercent;
+            GeneticOperator.m_SelectionForReproductionPercent = situationData.m_SelectionForReproductionPercent;
 
-            OutlinePopulation population = new OutlinePopulation(situationData.m_ChromosomesPerGeneration, aMap);
+            OutlinePopulation population = new OutlinePopulation(situationData, aMap);
             population.GenerateAdditionalPopulation(situationData);
             population.ComputeAdaptation();
             situationData.m_CurrentMaxAdaptation = population.GetMaxAdaptation();

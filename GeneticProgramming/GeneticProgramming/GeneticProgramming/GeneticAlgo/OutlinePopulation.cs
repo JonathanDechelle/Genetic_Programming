@@ -14,6 +14,11 @@ namespace GeneticProgramming
             m_Map = aMap;
         }
 
+        public OutlinePopulation(SituationData aSituationData, OutlineMap aMap) : base(aSituationData)
+        {
+            m_Map = aMap;
+        }
+
         public override void ComputeAdaptation()
         {
             m_AdaptationSum = 0;

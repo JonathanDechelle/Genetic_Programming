@@ -17,12 +17,23 @@ namespace GeneticProgramming
             m_Chromosomes = new Chromosome[aPopulationCount];
         }
 
+        public Population(SituationData aSituationData)
+        {
+            Population(aSituationData.m_ChromosomesPerGeneration);
+        }
+
+        public void GenerateAdditionalPopulation(int aMaxTry, int aParametersPerChromosomes)
+        {
+            int startIndex = GetCount();
+            for (int i = startIndex; i < m_Chromosomes.Length; i++)
+            {
+                m_Chromosomes[i] = new Chromosome(aMaxTry, aParametersPerChromosomes);
+            }
+        }
+
         public void GenerateAdditionalPopulation(SituationData aSituationData)
         {
-            for (int i = GetCount(); i < m_Chromosomes.Length; i++)
-            {
-                m_Chromosomes[i] = new Chromosome(aSituationData.m_MaxTry, aSituationData.m_ParametersPerChromosomes);
-            }
+            GenerateAdditionalPopulation(aSituationData.m_MaxTry, aSituationData.m_ParametersPerChromosomes);
         }
 
         public Chromosome GetChromosomeAt(int aIndex)
