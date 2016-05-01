@@ -21,9 +21,15 @@ namespace GeneticProgramming
     public class GeneticSequence
     {
         private StateMachine m_StateMachine;
+        
         private Situation m_Situation;
         private SituationData m_SituationData;
+        
         private Population m_Population;
+        private Population m_NewPopulation;
+
+        private Chromosome m_BestChromosome;
+        private Chromosome[] m_ParentChromosomes;
         private int m_NbGenerations = 0;
 
         public GeneticSequence(SituationData aSituationData)
@@ -68,7 +74,8 @@ namespace GeneticProgramming
 
         public void OnEnterExperienceFinish()
         {
-
+            m_Situation.AddABestChromosome(m_BestChromosome.Clone());
+            Console.WriteLine("Nb Generation = " + m_NbGenerations);
         }
 
         public void OnEnterGenerateNewPopulation()
@@ -76,27 +83,32 @@ namespace GeneticProgramming
             if (m_Situation.HasSucceeded)
             {
                 m_StateMachine.SetState(ESequenceState.EXPERIENCE_FINISH);
+                return;
             }
+
+            m_NewPopulation = new Population(m_SituationData);
         }
 
         public void OnEnterGetTheElites()
         {
-
+            m_ParentChromosomes = GeneticOperator.GetElites(m_Population);
+            m_NewPopulation.AddChromosomes(m_ParentChromosomes);
         }
 
         public void OnEnterReproduction()
         {
-
+            Chromosome[] childrens = GeneticOperator.CrossOver1Point(m_ParentChromosomes);
+            m_NewPopulation.AddChromosomes(childrens);
         }
 
         public void OnExitReproduction()
         {
-
+            m_NewPopulation.ComputeAdaptation();
         }
 
         public void OnEnterEqualizePopulation()
         {
-
+            m_NewPopulation.GenerateAdditionalPopulation(m_SituationData);
         }
 
         public void OnEnterRandomMutation()
