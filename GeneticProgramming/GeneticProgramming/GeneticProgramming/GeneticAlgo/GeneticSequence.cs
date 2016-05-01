@@ -113,27 +113,36 @@ namespace GeneticProgramming
 
         public void OnEnterRandomMutation()
         {
-
+            GeneticOperator.Mutate(m_NewPopulation);
         }
 
         public void OnEnterReplaceOldGeneration()
         {
-
+            m_Population.SetChromosomes(m_NewPopulation.GetChromosomes());
         }
 
         public void OnExitReplaceOldGeneration()
         {
-
+            m_Population.ComputeAdaptation();
         }
 
         public void OnEnterUpdateSituation()
         {
-
+            m_BestChromosome = m_Population.GetBestChromosome();
+            m_SituationData.m_CurrentMaxAdaptation = m_BestChromosome.m_Adaptation;
         }
 
         public void OnExitUpdateSituation()
         {
-
+            m_NbGenerations++;
+            if (m_NbGenerations % m_SituationData.m_BestChromosomeByXGeneration == 0)
+            {
+                double bestAdaptation = m_Situation.GetBestAdaptation();
+                if (bestAdaptation < m_BestChromosome.m_Adaptation)
+                {
+                    m_Situation.AddABestChromosome(m_BestChromosome.Clone());
+                }
+            }
         }
     } 
 }
