@@ -60,13 +60,18 @@ namespace GeneticProgramming
 
         public void OnEnterGenerateFirstPopulation()
         {
-            m_Population = new Population(m_SituationData);
+            InitializeFirstPopulation();
             m_Population.GenerateAdditionalPopulation(m_SituationData);
 
             m_Situation = new Situation(m_SituationData);
             GeneticOperator.SetOperatorPercents(m_SituationData);
 
             m_StateMachine.SetState(ESequenceState.GENERATE_NEW_POPULATION);
+        }
+
+        public virtual void InitializeFirstPopulation()
+        {
+            m_Population = new Population(m_SituationData);
         }
 
         public void OnExitGenerateFirstPopulation()
@@ -89,9 +94,14 @@ namespace GeneticProgramming
                 return;
             }
 
-            m_NewPopulation = new Population(m_SituationData);
+            InitializeNewtPopulation();
 
             m_StateMachine.SetState(ESequenceState.GET_THE_ELITES);
+        }
+
+        public virtual void InitializeNewtPopulation()
+        {
+            m_Population = new Population(m_SituationData);
         }
 
         public void OnEnterGetTheElites()
