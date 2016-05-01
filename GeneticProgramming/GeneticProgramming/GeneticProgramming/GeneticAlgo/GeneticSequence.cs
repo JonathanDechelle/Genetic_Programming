@@ -23,10 +23,10 @@ namespace GeneticProgramming
         private StateMachine m_StateMachine;
         
         private Situation m_Situation;
-        private SituationData m_SituationData;
+        protected SituationData m_SituationData;
         
-        private Population m_Population;
-        private Population m_NewPopulation;
+        protected Population m_Population;
+        protected Population m_NewPopulation;
 
         private Chromosome m_BestChromosome;
         private Chromosome[] m_ParentChromosomes;
@@ -58,6 +58,11 @@ namespace GeneticProgramming
             m_StateMachine.Update();
         }
 
+        public virtual void InitializeFirstPopulation()
+        {
+            m_Population = new Population(m_SituationData);
+        }
+
         public void OnEnterGenerateFirstPopulation()
         {
             InitializeFirstPopulation();
@@ -67,11 +72,6 @@ namespace GeneticProgramming
             GeneticOperator.SetOperatorPercents(m_SituationData);
 
             m_StateMachine.SetState(ESequenceState.GENERATE_NEW_POPULATION);
-        }
-
-        public virtual void InitializeFirstPopulation()
-        {
-            m_Population = new Population(m_SituationData);
         }
 
         public void OnExitGenerateFirstPopulation()
@@ -86,6 +86,11 @@ namespace GeneticProgramming
             Console.WriteLine("Nb Generation = " + m_NbGenerations);
         }
 
+        public virtual void InitializeNewtPopulation()
+        {
+            m_Population = new Population(m_SituationData);
+        }
+
         public void OnEnterGenerateNewPopulation()
         {
             if (m_Situation.HasSucceeded)
@@ -97,11 +102,6 @@ namespace GeneticProgramming
             InitializeNewtPopulation();
 
             m_StateMachine.SetState(ESequenceState.GET_THE_ELITES);
-        }
-
-        public virtual void InitializeNewtPopulation()
-        {
-            m_Population = new Population(m_SituationData);
         }
 
         public void OnEnterGetTheElites()
