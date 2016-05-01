@@ -76,8 +76,8 @@ namespace GeneticProgramming
 
         public void OnExitGenerateFirstPopulation()
         {
-            m_Population.ComputeAdaptation();
-            m_SituationData.m_CurrentMaxAdaptation = m_Population.GetMaxAdaptation();
+            m_Population.ComputeAdaptation(); 
+            UpdateCurrentAdaptation();
         }
 
         public void OnEnterExperienceFinish()
@@ -153,10 +153,14 @@ namespace GeneticProgramming
 
         public void OnEnterUpdateSituation()
         {
+            UpdateCurrentAdaptation();
+            m_StateMachine.SetState(ESequenceState.GENERATE_NEW_POPULATION);
+        }
+
+        private void UpdateCurrentAdaptation()
+        {
             m_BestChromosome = m_Population.GetBestChromosome();
             m_SituationData.m_CurrentMaxAdaptation = m_BestChromosome.m_Adaptation;
-
-            m_StateMachine.SetState(ESequenceState.GENERATE_NEW_POPULATION);
         }
 
         public void OnExitUpdateSituation()
