@@ -13,12 +13,12 @@ namespace GeneticProgramming
             m_Map = aMap;
         }
 
-        public override void InitializeFirstPopulation()
+        protected override void InitializeFirstPopulation()
         {
             m_Population = new OutlinePopulation(m_SituationData, m_Map);
         }
 
-        public override void InitializeNewtPopulation()
+        protected override void InitializeNewtPopulation()
         {
             m_NewPopulation = new OutlinePopulation(m_SituationData, m_Map);
         }

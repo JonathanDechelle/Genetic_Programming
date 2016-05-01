@@ -58,12 +58,12 @@ namespace GeneticProgramming
             m_StateMachine.Update();
         }
 
-        public virtual void InitializeFirstPopulation()
+        protected virtual void InitializeFirstPopulation()
         {
             m_Population = new Population(m_SituationData);
         }
 
-        public void OnEnterGenerateFirstPopulation()
+        protected void OnEnterGenerateFirstPopulation()
         {
             InitializeFirstPopulation();
             m_Population.GenerateAdditionalPopulation(m_SituationData);
@@ -74,24 +74,24 @@ namespace GeneticProgramming
             m_StateMachine.SetState(ESequenceState.GENERATE_NEW_POPULATION);
         }
 
-        public void OnExitGenerateFirstPopulation()
+        protected void OnExitGenerateFirstPopulation()
         {
             m_Population.ComputeAdaptation(); 
             UpdateCurrentAdaptation();
         }
 
-        public void OnEnterExperienceFinish()
+        protected void OnEnterExperienceFinish()
         {
             m_Situation.AddABestChromosome(m_BestChromosome.Clone());
             Console.WriteLine("Nb Generation = " + m_NbGenerations);
         }
 
-        public virtual void InitializeNewtPopulation()
+        protected virtual void InitializeNewtPopulation()
         {
             m_Population = new Population(m_SituationData);
         }
 
-        public void OnEnterGenerateNewPopulation()
+        protected void OnEnterGenerateNewPopulation()
         {
             if (m_Situation.HasSucceeded)
             {
@@ -104,7 +104,7 @@ namespace GeneticProgramming
             m_StateMachine.SetState(ESequenceState.GET_THE_ELITES);
         }
 
-        public void OnEnterGetTheElites()
+        protected void OnEnterGetTheElites()
         {
             m_ParentChromosomes = GeneticOperator.GetElites(m_Population);
             m_NewPopulation.AddChromosomes(m_ParentChromosomes);
@@ -112,7 +112,7 @@ namespace GeneticProgramming
             m_StateMachine.SetState(ESequenceState.REPRODUCTION);
         }
 
-        public void OnEnterReproduction()
+        protected void OnEnterReproduction()
         {
             Chromosome[] childrens = GeneticOperator.CrossOver1Point(m_ParentChromosomes);
             m_NewPopulation.AddChromosomes(childrens);
@@ -120,38 +120,38 @@ namespace GeneticProgramming
             m_StateMachine.SetState(ESequenceState.EQUALIZE_POPULATION);
         }
 
-        public void OnExitReproduction()
+        protected void OnExitReproduction()
         {
             m_NewPopulation.ComputeAdaptation();
         }
 
-        public void OnEnterEqualizePopulation()
+        protected void OnEnterEqualizePopulation()
         {
             m_NewPopulation.GenerateAdditionalPopulation(m_SituationData);
 
             m_StateMachine.SetState(ESequenceState.RANDOM_MUTATION);
         }
 
-        public void OnEnterRandomMutation()
+        protected void OnEnterRandomMutation()
         {
             GeneticOperator.Mutate(m_NewPopulation);
 
             m_StateMachine.SetState(ESequenceState.REPLACE_OLD_GENERATION);
         }
 
-        public void OnEnterReplaceOldGeneration()
+        protected void OnEnterReplaceOldGeneration()
         {
             m_Population.SetChromosomes(m_NewPopulation.GetChromosomes());
 
             m_StateMachine.SetState(ESequenceState.UPDATE_SITUATION);
         }
 
-        public void OnExitReplaceOldGeneration()
+        protected void OnExitReplaceOldGeneration()
         {
             m_Population.ComputeAdaptation();
         }
 
-        public void OnEnterUpdateSituation()
+        protected void OnEnterUpdateSituation()
         {
             UpdateCurrentAdaptation();
             m_StateMachine.SetState(ESequenceState.GENERATE_NEW_POPULATION);
@@ -163,7 +163,7 @@ namespace GeneticProgramming
             m_SituationData.m_CurrentMaxAdaptation = m_BestChromosome.m_Adaptation;
         }
 
-        public void OnExitUpdateSituation()
+        protected void OnExitUpdateSituation()
         {
             m_NbGenerations++;
             if (m_NbGenerations % m_SituationData.m_BestChromosomeByXGeneration == 0)
