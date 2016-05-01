@@ -50,6 +50,7 @@ namespace GeneticProgramming
             m_StateMachine.AddState(ESequenceState.EXPERIENCE_FINISH, Status.OnEnter, OnEnterExperienceFinish);
 
             m_SituationData = aSituationData;
+            m_StateMachine.SetState(ESequenceState.GENERATE_FIRST_POPULATION);
         }
 
         public void Update()
@@ -64,6 +65,8 @@ namespace GeneticProgramming
 
             m_Situation = new Situation(m_SituationData);
             GeneticOperator.SetOperatorPercents(m_SituationData);
+
+            m_StateMachine.SetState(ESequenceState.GENERATE_NEW_POPULATION);
         }
 
         public void OnExitGenerateFirstPopulation()
@@ -87,18 +90,24 @@ namespace GeneticProgramming
             }
 
             m_NewPopulation = new Population(m_SituationData);
+
+            m_StateMachine.SetState(ESequenceState.GET_THE_ELITES);
         }
 
         public void OnEnterGetTheElites()
         {
             m_ParentChromosomes = GeneticOperator.GetElites(m_Population);
             m_NewPopulation.AddChromosomes(m_ParentChromosomes);
+
+            m_StateMachine.SetState(ESequenceState.REPRODUCTION);
         }
 
         public void OnEnterReproduction()
         {
             Chromosome[] childrens = GeneticOperator.CrossOver1Point(m_ParentChromosomes);
             m_NewPopulation.AddChromosomes(childrens);
+
+            m_StateMachine.SetState(ESequenceState.EQUALIZE_POPULATION);
         }
 
         public void OnExitReproduction()
@@ -109,16 +118,22 @@ namespace GeneticProgramming
         public void OnEnterEqualizePopulation()
         {
             m_NewPopulation.GenerateAdditionalPopulation(m_SituationData);
+
+            m_StateMachine.SetState(ESequenceState.RANDOM_MUTATION);
         }
 
         public void OnEnterRandomMutation()
         {
             GeneticOperator.Mutate(m_NewPopulation);
+
+            m_StateMachine.SetState(ESequenceState.REPLACE_OLD_GENERATION);
         }
 
         public void OnEnterReplaceOldGeneration()
         {
             m_Population.SetChromosomes(m_NewPopulation.GetChromosomes());
+
+            m_StateMachine.SetState(ESequenceState.UPDATE_SITUATION);
         }
 
         public void OnExitReplaceOldGeneration()
@@ -130,6 +145,8 @@ namespace GeneticProgramming
         {
             m_BestChromosome = m_Population.GetBestChromosome();
             m_SituationData.m_CurrentMaxAdaptation = m_BestChromosome.m_Adaptation;
+
+            m_StateMachine.SetState(ESequenceState.GENERATE_NEW_POPULATION);
         }
 
         public void OnExitUpdateSituation()
