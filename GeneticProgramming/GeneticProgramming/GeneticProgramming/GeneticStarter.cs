@@ -63,6 +63,7 @@ namespace GeneticProgramming
 
             Example.GenerateSimpleGPExample(m_Map, m_SituationData);
             m_BestChromosomes = Example.m_Situation.GetBestChromosomes();
+            /*revert */
         }
 
 		protected override void UnloadContent()
