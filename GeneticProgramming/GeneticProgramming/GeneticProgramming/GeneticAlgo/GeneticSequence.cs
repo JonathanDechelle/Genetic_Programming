@@ -16,6 +16,7 @@ namespace GeneticProgramming
         REPLACE_OLD_GENERATION = 6,
         UPDATE_SITUATION = 7,
         EXPERIENCE_FINISH = 8,
+        CLOSE_SEQUENCE = 9,
     }
 
     public class GeneticSequence
@@ -31,6 +32,14 @@ namespace GeneticProgramming
         private Chromosome m_BestChromosome;
         private Chromosome[] m_ParentChromosomes;
         private int m_NbGenerations = 0;
+
+        public ESequenceState CurrentSequence
+        {
+            get 
+            {
+                return (ESequenceState)m_StateMachine.GetCurrentState();
+            }
+        }
 
         public GeneticSequence(SituationData aSituationData)
         {
@@ -48,8 +57,15 @@ namespace GeneticProgramming
             m_StateMachine.AddState(ESequenceState.UPDATE_SITUATION, Status.OnEnter, OnEnterUpdateSituation);
             m_StateMachine.AddState(ESequenceState.UPDATE_SITUATION, Status.OnExit, OnExitUpdateSituation);
             m_StateMachine.AddState(ESequenceState.EXPERIENCE_FINISH, Status.OnEnter, OnEnterExperienceFinish);
+            m_StateMachine.AddState(ESequenceState.CLOSE_SEQUENCE, Status.OnEnter, OnEnterCloseSequence);
 
             m_SituationData = aSituationData;
+
+            /* start the sequence */
+        }
+
+        protected void StartSequence()
+        {
             m_StateMachine.SetState(ESequenceState.GENERATE_FIRST_POPULATION);
         }
 
@@ -84,6 +100,13 @@ namespace GeneticProgramming
         {
             m_Situation.AddABestChromosome(m_BestChromosome.Clone());
             Console.WriteLine("Nb Generation = " + m_NbGenerations);
+
+            m_StateMachine.SetState(ESequenceState.CLOSE_SEQUENCE);
+        }
+
+        protected void OnEnterCloseSequence()
+        {
+            /*external use*/
         }
 
         protected virtual void InitializeNewtPopulation()

@@ -11,6 +11,7 @@ namespace GeneticProgramming
         public OutlineGeneticSequence(OutlineMap aMap, SituationData aSituationData) : base(aSituationData)
         {
             m_Map = aMap;
+            StartSequence();
         }
 
         protected override void InitializeFirstPopulation()
